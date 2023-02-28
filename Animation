@@ -1,1 +1,171 @@
+import simplegui
+import random
+import math
 
+# Create Global Variable
+x = -200
+x2 =  -600
+y = 300
+ghostIMultiplier= 0
+pacSpeed = 3
+ghostSpeed = 3
+eyeOffset = 5
+mouthChange = 0
+mouthChange2 = 0
+eyeDirection = 0
+mouthDirection = 100
+mouthDirection2 = 0
+ySpeed = 0
+yOffset = 0
+ghostDistance = 250
+ghostDistanceY = 0
+color = 255
+colorDrain = 0
+pacColor = "rgb(" + str(color) + ", " + str(color) + ", " + str(0) + ")"
+
+def draw_handler(canvas):
+    global mouthChange
+    global mouthChange2
+    global eyeDirection
+    global mouthDirection
+    global mouthDirection2
+    global x
+    global x2
+    global y
+    global ghostSpeed
+    global pacSpeed
+    global ghostIMultiplier
+    global eyeOffset
+    global ySpeed
+    global yOffset
+    global ghostDistance
+    global ghostDistanceY
+    global colorDrain
+    global pacColor
+    global color
+    for i in range(3, 6,):
+            
+        #mouth movement
+        if x % 50 == 0 and math.fabs(ySpeed) != 4:
+            mouthChange = 40
+        elif x % 25 == 0 and math.fabs(ySpeed) != 4:
+            mouthChange = 0
+        if y % 120 == 0 and math.fabs(ySpeed) == 4:
+            mouthChange2 = 40
+        elif y % 60 == 0 and math.fabs(ySpeed) == 4:
+            mouthChange2 = 0
+            
+        #movement
+        x += pacSpeed
+        x2 += (i* ghostIMultiplier) + ghostSpeed
+        y += ySpeed
+        
+        #Pac Man
+        canvas.draw_circle((x, y+ ySpeed), 100, 1, "Black", pacColor) 
+        canvas.draw_polygon([(x, y + ySpeed), (x + mouthDirection + mouthChange2, y + mouthChange+ ySpeed + mouthDirection2), (x  + mouthDirection - mouthChange2, y - mouthChange+ ySpeed + mouthDirection2)], 0.00000001, "black", "black")
+        
+        #Red Ghost
+        #body
+        canvas.draw_circle((x2, y-25+ ySpeed + yOffset), 75, 0.000001, "red", "Red")
+        canvas.draw_polygon([(x2 - 75, y-25+ ySpeed + yOffset), (x2 + 75, y-25+ ySpeed + yOffset), (x2 + 75, y+100+ ySpeed + yOffset), (x2 + 37.5, y+75+ ySpeed + yOffset), (x2, y+100+ ySpeed + yOffset), (x2 - 37.5, y+75+ ySpeed + yOffset), (x2 - 75, y+100+ ySpeed + yOffset),], 1, "red", "red")
+        #eyes
+        canvas.draw_circle((x2 + 50 - eyeDirection, y-45+ ySpeed + yOffset), 15, 1, "red", "white")
+        canvas.draw_circle((x2 + 50 - eyeDirection + eyeOffset, y-45+ ySpeed + yOffset), 8, 1, "white", "black")
+        canvas.draw_circle((x2 + 5 - eyeDirection, y-45+ ySpeed + yOffset), 15, 1, "red",     "white")
+        canvas.draw_circle((x2 + 5 - eyeDirection + eyeOffset, y-45+ ySpeed + yOffset), 8, 1, "white", "black")
+    
+        #Pink Ghost
+        #body
+        canvas.draw_circle((x2 - ghostDistance, y - 25 + ySpeed + yOffset + ghostDistanceY), 75, 0.000001, "pnk", "pink")
+        canvas.draw_polygon([(x2 - 75 - ghostDistance, y - 25 +  ySpeed + yOffset + ghostDistanceY), (x2 + 75 - ghostDistance, y-25+ ySpeed + yOffset+ghostDistanceY), (x2 + 75 - ghostDistance, y + 100 + ySpeed + yOffset + ghostDistanceY), (x2 + 37.5 - ghostDistance, y + 75 + ySpeed + yOffset+ ghostDistanceY), (x2 - ghostDistance, y + 100 +  ySpeed + yOffset + ghostDistanceY), (x2 - 37.5 -  ghostDistance, y + 75 + ySpeed + yOffset + ghostDistanceY), (x2 - 75 - ghostDistance, y + 100 +  ySpeed + yOffset+ghostDistanceY),], 1, "pink", "pink")
+        #eyes
+        canvas.draw_circle((x2 + 50 - eyeDirection - ghostDistance, y - 45 + ySpeed + yOffset + ghostDistanceY), 15, 1, "pink", "white")
+        canvas.draw_circle((x2 + 50 - eyeDirection + eyeOffset -  ghostDistance, y - 45 + ySpeed + yOffset+ghostDistanceY), 8, 1, "white", "black")
+        canvas.draw_circle((x2 + 5 - eyeDirection - ghostDistance, y - 45 + ySpeed + yOffset+ghostDistanceY), 15, 1, "pink", "white")
+        canvas.draw_circle((x2 + 5 - eyeDirection + eyeOffset -  ghostDistance, y - 45 + ySpeed + yOffset + ghostDistanceY), 8, 1, "white", "black")
+        
+        #chase looping
+        if x2 > 1000 and ySpeed == 0 and x > x2:
+            mouthDirection = 0
+            pacSpeed = 0
+            ghostSpeed = 0
+            x = 300
+            x2 = 300
+            y = 800
+            ySpeed = -4
+            yOffset = 400
+            ghostDistance = 0
+            ghostDistanceY = 250
+            mouthDirection2 = -100
+            
+        if y <= -800:
+            mouthDirection = -100
+            pacSpeed = -3
+            ghostSpeed = -3
+            eyeOffset = -5
+            x = 750
+            x2 = 1400
+            y = 300
+            ySpeed = 0
+            yOffset = 0
+            ghostDistance = 250
+            ghostDistanceY = 0
+            mouthDirection2 = 0
+            eyeDirection = 50
+            
+        if x2 <= -800 and pacSpeed == -3:
+            mouthDirection = 0
+            pacSpeed = 0
+            ghostSpeed = 0
+            x = 300
+            x2 = 300
+            y = -800
+            ySpeed =  4
+            yOffset = -400
+            ghostDistance = 0
+            ghostDistanceY = -250
+            mouthDirection2 = 100
+            
+        if y >= 1400 and ySpeed == 4:
+            mouthDirection = 100
+            ghostIMultiplier = 1
+            pacSpeed = 3
+            ghostSpeed = 0
+            eyeOffset = 5
+            x = -200
+            x2 = -600
+            y = 300
+            ySpeed = 0
+            yOffset = 0
+            ghostDistance = 250
+            ghostDistanceY = 0
+            mouthDirection2 = 0
+            eyeDirection = 0
+            
+        if x - x2 - 175 <= 1 and x > x2:
+            pacSpeed = 0
+            ghostIMultiplier = 0
+            colorDrain = 1
+            
+        #color Change
+        color -= colorDrain
+        pacColor = "rgb(" + str(color) + ", " + str(color) + ", " + str(0) + ")"
+            
+        #enviornment
+        #topleft
+        canvas.draw_line((0, 80), (100, 80), 40, "Blue")
+        canvas.draw_line((100, 100), (100, 0), 40, "Blue")
+        #topright
+        canvas.draw_line((600, 80), (500, 80), 40, "Blue")
+        canvas.draw_line((500, 100), (500, 0), 40, "Blue")
+        #bottomleft
+        canvas.draw_line((0, 520), (100, 520), 40, "Blue")
+        canvas.draw_line((100, 500), (100, 600), 40, "Blue")
+        #bottomright
+        canvas.draw_line((600, 520,), (500, 520), 40, "Blue")
+        canvas.draw_line((500, 500), (500, 600), 40, "Blue")
+ 
+frame = simplegui.create_frame('Testing', 600, 600)
+frame.set_canvas_background("Black")
+frame.set_draw_handler(draw_handler)
+frame.start()
