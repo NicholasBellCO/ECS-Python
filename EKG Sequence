@@ -1,0 +1,48 @@
+#Works
+import simpleplot
+sequence = [1]
+def checkFactors(num1, num2):
+    factors = []
+    row = []
+    for i in range(2, num1 + 1):
+        if num1 % i == 0:
+            row.append(i)
+    factors.append(row)
+    row = []
+    for i in range(2, num2 + 1):
+        if num2 % i == 0:
+            row.append(i)
+    factors.append(row)
+    for factor1 in factors[0]:
+        for factor2 in factors[1]:
+            if factor1 == factor2:
+                return True
+                
+def checkNum(num):
+    for number in sequence:
+        if number == num:
+            return True 
+                
+def ECG(num, b):
+    stop = False
+    while stop == False:
+        number = 2
+        while stop == False:
+            if (checkFactors(number, sequence[len(sequence) - 1]) == True or number == 2) and checkNum(number) != True and stop != True:
+                sequence.append(number)
+                if number == num:
+                    stop = True
+                elif len(sequence) >= b:
+                    stop = True
+                break
+            number += 1
+    print(sequence)
+    for i in range(len(sequence)):
+        if sequence[i] == num:
+            print(str(num) + " is at index " + str(i))
+ECG(200, 120)
+
+points = []
+for i in range(len(sequence)):
+    points.append((i, sequence[i]))
+simpleplot.plot_lines("EKG", 600, 600, "index", "number", [points], False, ["Numbers"])
