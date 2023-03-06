@@ -1,4 +1,3 @@
-#Works
 import math
 def prime(num):
     #Check if number is prime
