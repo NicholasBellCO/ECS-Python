@@ -1,0 +1,109 @@
+months = ["A", "B", "C", "D", "E", "H", "L", "M", "P", "R", "S", "T"]    
+def convertSurname(name):
+    name = name.upper()
+    count = 0
+    result = ""
+    for letter in name:
+        if letter != "A" and letter != "E" and letter != "I" and letter != "O" and letter != "U" and count < 3:
+            result += letter
+            count += 1
+    if count < 3:
+        for letter in name:
+            if (letter == "A" or letter == "E" or letter == "I" or letter == "O" or letter == "U") and count < 3:
+                result += letter
+                count += 1
+    if count < 3:
+        result += "X"
+    
+    return result
+    
+def convertName(name):
+    name = name.upper()
+    count = 0
+    result = ""
+    consonants = []
+    for letter in name:
+        if letter != "A" and letter != "E" and letter != "I" and letter != "O" and letter != "U":
+            consonants.append(letter)
+    if len(consonants) == 3:
+        for letter in consonants:
+            result += letter
+        count = 3
+    elif len(consonants) > 3:
+        result += consonants[0]
+        result += consonants[2]
+        result += consonants[3]
+        count = 3
+    elif len(consonants) < 3:
+        for letter in consonants:
+            result += letter
+            count += 1
+        for letter in name:
+            if (letter == "A" or letter == "E" or letter == "I" or letter == "O" or letter == "U") and count < 3:
+                result += letter
+                count += 1
+    if count < 3:
+        result += "X"
+    return result
+
+def convertYear(year):
+    result = ""
+    count = 1
+    for number in year:
+        if count == 3 or count == 4:
+            result += number
+        count += 1
+    return result
+    
+def convertMonth(month):
+    return months[int(month) - 1]
+    
+def convertDay(day, gender):
+    result = ""
+    if gender == "M":
+        if int(day) < 10:
+            result += "0"
+            result += day
+        else:
+            result = day
+    
+    elif gender == "F":
+        day = int(day) + 40
+        result = str(day)
+        
+    return result
+    
+def fiscalCode(info):
+    print(info)
+    code = ""
+    slashes = 0
+    day = ""
+    month = ""
+    year = ""
+    code += convertSurname(info[1])
+    code += convertName(info[0])
+    
+    for character in info[3]:
+        if character == "/":
+            slashes += 1
+        else:
+            if slashes == 0:
+                day += character
+            elif slashes == 1:
+                month += character
+            elif slashes == 2:
+                year += character
+                
+    code += convertYear(year)
+    code += convertMonth(month)
+    code += convertDay(day, info[2])
+    
+    return code
+    
+#Main
+information = []
+information.append(input("name: "))
+information.append(input("surname: "))
+information.append(input("gender(\"M\" for male, \"F\" for female): "))
+information.append(input("dob(D/M/YYYY): "))
+print(fiscalCode(information))
