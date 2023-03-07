@@ -1,0 +1,216 @@
+#Works
+#Solves quadratics
+import math
+def simplify(string):
+    #remove non valid characters
+    result = ""
+    valid = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "x", "+", "-", "=", "^", "."]
+    for i in string:
+        for j in valid:
+            if i == j:
+                result += i
+    return result
+
+def checkFloat(num):
+    if num % 1 == 0:
+        return int(num)
+    else:
+        return(float(num))
+
+def solve(polynomial):
+    #move all numbers to one side of the equation, and find a, b, c
+    polynomial = simplify(polynomial)
+    plus = 0
+    exponent = False
+    a = ""
+    b = ""
+    c = ""
+    negativeA = False
+    negativeB = False
+    negativeC = False
+    start = True
+    equal = False
+    for i in polynomial:
+        if i == "=":
+            equal = True
+        if equal == False:
+            if plus == 0:
+                if start:
+                    start = False
+                    if i == "-":
+                        negativeA = True
+                    else:
+                        a += i
+                elif i == "-":
+                    plus += 1
+                    negativeB = True
+                elif i == "+":
+                    plus += 1
+                elif exponent == False:
+                    if i == "^":
+                        exponent = True
+                    elif i != "x":
+                        a += i
+            elif plus == 1:
+                if i == "-":
+                    plus += 1
+                    negativeC = True
+                elif i == "+":
+                    plus += 1
+                elif i != "x":
+                    b += i
+            elif plus == 2:
+                c += i
+    #convert a, b, c to numbers
+    a = float(a)
+    b = float(b)
+    c = float(c)
+    #account for negatives
+    if negativeA:
+        a = -a
+    if negativeB:
+        b = -b
+    if negativeC:
+        c = -c
+    #move right side of equation to left side        
+    plus = 0
+    exponent = False
+    d = ""
+    e = ""
+    f = ""
+    negativeD = False
+    negativeE = False
+    negativeF = False
+    start = True
+    equal = False
+    for i in polynomial:
+        if i == "=":
+            equal = True
+        if equal and i != "=":
+            if plus == 0:
+                if start:
+                    start = False
+                    if i == "-":
+                        negativeD = True
+                    else:
+                        d += i
+                elif i == "-":
+                    plus += 1
+                    negativeE = True
+                elif i == "+":
+                    plus += 1
+                elif exponent == False:
+                    if i == "^":
+                        exponent = True
+                    elif i != "x":
+                        d += i
+            elif plus == 1:
+                if i == "-":
+                    plus += 1
+                    negativeF = True
+                elif i == "+":
+                    plus += 1
+                elif i != "x":
+                    e += i
+            elif plus == 2:
+                f += i
+    if d != "":
+        d = float(d)
+    else:
+        d = 0
+    if e != "":
+        e = float(e)
+    else:
+        e = 0
+    if f != "":
+       f = float(f)
+    else:
+        f = 0
+    if negativeD:
+        d = -d
+    if negativeE:
+        e = -e
+    if negativeF:
+        f = -f
+    a -= d
+    b -= e
+    c -= f
+    #if there is a divide by 0 issue
+    if a == 0:
+        print("invalid")
+    else:
+        roots(a, b, c)
+    
+def negative(b, a):
+    #test if the second root can have a -1 factored out
+    if -b < 0 and a < 0:
+        return True
+    else:
+        return False
+    
+def roots(a, b, c):
+    radicand = checkFloat((math.pow(b, 2) - 4 * a * c))
+    #if roots are imaginary
+    if radicand < 0:
+        radicand = radicand * -1
+        coeff = 1
+        if radicand != 1 and int(radicand) == radicand:
+            #factor out perfect squares from radical
+            for factor in range(radicand, 3, -1):
+                if (math.pow(factor, 0.5)) % 1 == 0 and radicand % factor == 0:
+                    radicand = int(radicand / factor)
+                    coeff = int(coeff * (math.pow(factor, 0.5)))
+        #simplify
+        for factor in range(coeff, 1, -1):
+            if coeff % factor == 0 and (2 * a) % factor == 0 and (b) % factor == 0:
+                coeff = int(coeff / factor)
+                a = float(a / factor)
+                b = int(b / factor)
+        root1 = ""
+        root2 = ""
+        if 2 * a != 1:
+            if 2 * a == -1:
+                b = -b
+            else:
+                #only print parenthesis if a isn't 1 or -1
+                root1 += "("
+                root2 += "("
+        radicand = checkFloat(radicand)
+        b = checkFloat(b)
+        if (2 * a) == -1:
+            root1 += str(-b) + " - "
+        else:
+            root1 += str(-b) + " + "
+        #if -b, a, and the coefficient are negative, factor out -1
+        if negative(b, a):
+            root2 += str(-b) + " + "
+        else:
+            root2 += str(-b) + " - "
+        if coeff != 1:
+            root1 += str(coeff)
+            root2 += str(coeff)
+        root1 += "i"
+        root2 += "i"
+        if radicand != 1:
+            root1 += "(" + str(radicand) + ")^0.5"
+            root2 += "(" + str(radicand) + ")^0.5"
+        if 2 * a != 1 and 2 * a != -1:
+            root1 += ") / " + str(checkFloat(2 * a))
+            if negative(b, a):
+                #if -b, a, and coeff are negative, factor out -1
+                root2 += ") / " + str(checkFloat(-2 * a))
+            else:
+                root2 += ") / " + str(checkFloat(2 * a))
+    else:
+        #if numbers are real, calculate
+        root1 = (-b + math.pow(radicand, 0.5)) / (2 * a)
+        root2 = (-b - math.pow(radicand, 0.5)) / (2 * a)
+        if root1 > root2:
+            #reorder roots from least to greatest
+            temp = root1
+            root1 = root2
+            root2 = temp
+    print("The first root is " + str(root1))
+    print("The second root is " + str(root2))
+        
+solve("-0.5x^2 - 2x + 10")
