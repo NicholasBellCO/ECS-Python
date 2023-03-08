@@ -174,7 +174,6 @@ def negative(b, a):
 def roots(a, b, c):
     fractions = 0
     radicand = checkFloat((math.pow(b, 2) - 4 * a * c))
-    print(radicand)
     #if roots are imaginary
     if radicand < 0:
         radicand = radicand * -1
