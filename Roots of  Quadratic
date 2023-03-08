@@ -1,10 +1,10 @@
-#Works
 #Solves quadratics
 import math
+decimals = [0.5, 0.25, 0.2, 0.125, 0.1, 0.0625, 0.05, 0.04]
 def simplify(string):
     #remove non valid characters
     result = ""
-    valid = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "x", "+", "-", "=", "^", "."]
+    valid = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "x", "+", "-", "=", "^", ".", "(", ")"]
     for i in string:
         for j in valid:
             if i == j:
@@ -12,10 +12,20 @@ def simplify(string):
     return result
 
 def checkFloat(num):
-    if num % 1 == 0:
+    if float(num) % 1 == 0:
         return int(num)
+    elif str(num) == num:
+        return num
     else:
-        return(float(num))
+        return float(num)
+        
+def simplifyFraction(numerator, denominator):
+    for factor in range(int(numerator), 1, -1):
+        if float(numerator) % factor == 0 and float(denominator) % factor == 0:
+            numerator = checkFloat(numerator / factor)
+            denominator = checkFloat(denominator / factor)
+    result = str(checkFloat(numerator)) + "/" + str(checkFloat(denominator))
+    return result
 
 def solve(polynomial):
     #move all numbers to one side of the equation, and find a, b, c
@@ -149,6 +159,7 @@ def negative(b, a):
         return False
     
 def roots(a, b, c):
+    fractions = 0
     radicand = checkFloat((math.pow(b, 2) - 4 * a * c))
     #if roots are imaginary
     if radicand < 0:
@@ -160,30 +171,34 @@ def roots(a, b, c):
                 if (math.pow(factor, 0.5)) % 1 == 0 and radicand % factor == 0:
                     radicand = int(radicand / factor)
                     coeff = int(coeff * (math.pow(factor, 0.5)))
+        #simplify if denominator is easy decimal         
+        for i in decimals:
+            if a == i or -a == i:
+                a = a / i
+                b = b / i
+                coeff = coeff / i
+
         #simplify
-        for factor in range(coeff, 1, -1):
+        for factor in range(int(coeff), 1, -1):
             if coeff % factor == 0 and (2 * a) % factor == 0 and (b) % factor == 0:
                 coeff = int(coeff / factor)
                 a = float(a / factor)
                 b = int(b / factor)
         root1 = ""
         root2 = ""
-        if 2 * a != 1:
-            if 2 * a == -1:
-                b = -b
-            else:
-                #only print parenthesis if a isn't 1 or -1
-                root1 += "("
-                root2 += "("
+        if 2 * a != 1 and 2 * a != -1:
+            #only print parenthesis if a isn't 1 or -1
+            root1 += "("
+            root2 += "("
         radicand = checkFloat(radicand)
         b = checkFloat(b)
         if (2 * a) == -1:
-            root1 += str(-b) + " - "
+            root1 += str(b) + " - "
         else:
             root1 += str(-b) + " + "
         #if -b, a, and the coefficient are negative, factor out -1
         if negative(b, a):
-            root2 += str(-b) + " + "
+            root2 += str(b) + " + "
         else:
             root2 += str(-b) + " - "
         if coeff != 1:
@@ -201,16 +216,118 @@ def roots(a, b, c):
                 root2 += ") / " + str(checkFloat(-2 * a))
             else:
                 root2 += ") / " + str(checkFloat(2 * a))
+        print("\nThe first root is " + str(root1))
+        print("The second root is " + str(root2))
     else:
         #if numbers are real, calculate
         root1 = (-b + math.pow(radicand, 0.5)) / (2 * a)
         root2 = (-b - math.pow(radicand, 0.5)) / (2 * a)
-        if root1 > root2:
-            #reorder roots from least to greatest
-            temp = root1
-            root1 = root2
-            root2 = temp
-    print("The first root is " + str(root1))
-    print("The second root is " + str(root2))
+
+        if root1 % 1 != 0:
+            fractions += 1
+        if root2 % 1 != 0:
+            fractions += 2
+        if fractions == 1:
+            choice = input("One root has a decimal, would you like it \nas a fraction?(yes/no): ")
+            if choice.lower() == "yes":
+                root1 = simplifyFraction((-b + math.pow(radicand, 0.5)), (2 * a))
+        elif fractions == 2:
+            choice = input("One root has a decimal, would you like it \nas a fraction?(yes/no): ")
+            if choice.lower() == "yes":
+                root2 = simplifyFraction((-b - math.pow(radicand, 0.5)), (2 * a))  
+        elif fractions == 3:
+            choice = input("Both roots have decimals, would you like them \nas fractions?(yes/no): ")
+            if choice.lower() == "yes":
+                root1 = simplifyFraction((-b + math.pow(radicand, 0.5)), (2 * a))
+                root2 = simplifyFraction((-b - math.pow(radicand, 0.5)), (2 * a))  
+            
+        print("\nThe first root is " + str(root1))
+        if root1 != root2:
+            print("The second root is " + str(root2))
+        else:
+            print("There is only one root")
         
-solve("-2x^2 + 6x + 3 = -1.5x^2 + 8x + 13")
+def vertexToStandard(equation):
+    equation = simplify(equation)
+    negativeA = False
+    negativeH = False
+    negativeK = False
+    parentheses = 0
+    square = False
+    wait = False
+    a = ""
+    h = ""
+    k = ""
+    for i in equation:
+        if wait == True:
+            wait = False
+        elif i == "^":
+            square = True
+            wait = True
+        elif parentheses == 0:
+            if i == "-":
+                negativeA = True
+            elif i == "(":
+                parentheses += 1
+            elif i != "x":
+                a += i
+        elif parentheses == 1:
+            if i == "-":
+                negativeH = True
+            elif i == ")":
+                parentheses += 1
+            elif i != "x":
+                h += i
+        elif parentheses == 2 and square:
+            if i == "-":
+                negativeK = True
+            elif i != "x":
+                k += i
+                
+    a = float(a)
+    h = float(h)
+    k = float(k)
+    if negativeA:
+        a = a * -1
+    if negativeH:
+        h = h * -1
+    if negativeK:
+        k = k * -1
+    result = ""
+    aTerm = str(a) + "x^2"
+    result += aTerm
+    if negativeH and negativeA:
+        result += "+"
+    elif negativeH and negativeA == False:
+        if h == 0:
+            result += "+"
+    elif negativeA and negativeH == False:
+        if h == 0:
+            result += "+"
+    else:
+        result += "+"
+    bTerm = str(checkFloat(float(a) * float(h) * 2)) + "x"
+    result += bTerm
+    cTerm = (checkFloat((math.pow(float(h), 2) * float(a)) + k))
+    if cTerm >= 0:
+        result += "+" + str(cTerm)
+    else:
+        result += str(cTerm)
+    return result
+
+stop = False
+#Main
+while stop == False:
+    function = input("\nEnter a quadratic in either vertex or standard form\na(x - h)^2 + k\nax^2 + bx + c\nax^2 + bx + c = dx^2 + ex + f\n\n")
+    parentheses = 0
+    for i in function:
+        if i =="(" or i == ")":
+            parentheses += 1
+    if parentheses == 2:
+        function = vertexToStandard(function)
+    solve(function)
+    stop = input("Do you want to enter another?(no to stop): ")
+    if stop.lower() == "no":
+        stop = True
+    else:
+        stop = False
