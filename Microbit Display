@@ -1,4 +1,3 @@
-Billboard:
 from microbit import *
 
 choice = 0
