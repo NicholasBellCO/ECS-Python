@@ -20,12 +20,25 @@ def checkFloat(num):
         return float(num)
         
 def simplifyFraction(numerator, denominator):
-    for factor in range(int(numerator), 1, -1):
-        if float(numerator) % factor == 0 and float(denominator) % factor == 0:
-            numerator = checkFloat(numerator / factor)
-            denominator = checkFloat(denominator / factor)
-    result = str(checkFloat(numerator)) + "/" + str(checkFloat(denominator))
-    return result
+  negativeNumerator = False
+  negativeDenominator = False
+  if numerator < 0:
+    numerator = -numerator
+    negativeNumerator = True
+  if denominator < 0:
+    denominator = -denominator
+    negativeDenominator = True
+  for factor in range(int(numerator), 1, -1):
+      if float(numerator) % factor == 0 and float(denominator) % factor == 0:
+          numerator = checkFloat(numerator / factor)
+          denominator = checkFloat(denominator / factor)
+
+  if negativeNumerator:
+    numerator = -numerator
+  if negativeDenominator:
+    denominator = -denominator
+  result = str(checkFloat(numerator)) + "/" + str(checkFloat(denominator))
+  return result
 
 def solve(polynomial):
     #move all numbers to one side of the equation, and find a, b, c
@@ -161,6 +174,7 @@ def negative(b, a):
 def roots(a, b, c):
     fractions = 0
     radicand = checkFloat((math.pow(b, 2) - 4 * a * c))
+    print(radicand)
     #if roots are imaginary
     if radicand < 0:
         radicand = radicand * -1
