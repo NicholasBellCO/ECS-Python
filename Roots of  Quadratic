@@ -181,9 +181,10 @@ def roots(a, b, c):
         #simplify
         for factor in range(int(coeff), 1, -1):
             if coeff % factor == 0 and (2 * a) % factor == 0 and (b) % factor == 0:
-                coeff = int(coeff / factor)
+                coeff = (coeff / factor)
                 a = float(a / factor)
                 b = int(b / factor)
+        coeff = checkFloat(coeff)
         root1 = ""
         root2 = ""
         if 2 * a != 1 and 2 * a != -1:
