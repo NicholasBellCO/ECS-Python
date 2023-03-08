@@ -1,4 +1,3 @@
-Gate Runner:
 from microbit import *
 import random
 
