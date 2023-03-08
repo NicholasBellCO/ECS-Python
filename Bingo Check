@@ -1,0 +1,73 @@
+#Works
+def bingo(board):
+    stop = 0
+    for i in range(len(board[0])):
+        totalb = 0
+        b = board[0][i]
+        totalc = 0
+        totald = 0
+        for row in board:
+            a = row[0]
+            c = board[0][0]
+            d = board[0][len(board)-1]
+            totala = 0
+            if row[i] == b:
+                totalb += 1
+            for col in row:
+                if col == a:
+                    totala += 1
+                if col == c :
+                    totalc += 1
+                elif col == d:
+                    totald += 1
+            if totala == len(board) and stop != 1:
+                print("BINGO")
+                stop = 1
+        if totalb == len(board) and stop != 1:
+            print("BINGO")
+            stop = 1
+    if totalc == len(board) and stop != 1:
+        print("BINGO")
+    if totald == len(board) and stop != 1:
+        print("BINGO")
+#Main
+
+bingo([
+  [45, 31, 30, 74, 87, "x"],
+  [64, 47, 40, 32, 90, "x"],
+  [37, 68, 50, 83, 54, "x"],
+  [67, 98, 20, 39, 44, "x"],
+  [21, 24, 10, 30, 52, "x"],
+]) 
+
+bingo([
+  [87, 43, 31, 74, "x"],
+  [64, 32, 47, "x", 90],
+  [37, 65, "x", 83, 54],
+  [67, "x", 39, 98, 44],
+  ["x", 59, 24, 30, 21]
+]) 
+
+bingo([
+  [64, 12, 47, 32, 90],
+  ["x", "x", "x", "x", "x"],
+  [37, 16, 68, 83, 54],
+  [67, 19, 98, 39, 44],
+  [21, 75, 24, 30, 52]
+])
+
+bingo([
+  [45, "x", 31, 74, 87],
+  [64, 78, 47, "x", 90],
+  [37, "x", 68, 83, 54],
+  [67, "x", 98, "x", 44],
+  [21, "x", 24, 30, 52]
+])
+
+bingo([
+  ["x", "x", "x", "x", "x"],
+  ["x", "x", "x", "x", "x"],
+  ["x", "x", "x", "x", "x"],
+  ["x", "x", "x", "x", "x"],
+  ["x", "x", "x", "x", "x"]
+])
