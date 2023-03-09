@@ -51,14 +51,12 @@ def solve(polynomial):
     d = ""
     e = ""
     f = ""
-    negativeD = False
-    negativeE = False
-    negativeF = False
-    start = True
-    equal = False
     negativeA = False
     negativeB = False
     negativeC = False
+    negativeD = False
+    negativeE = False
+    negativeF = False
     start = True
     equal = False
     for i in polynomial:
@@ -92,33 +90,11 @@ def solve(polynomial):
                     b += i
             elif plus == 2:
                 c += i
-    #convert a, b, c to numbers
-    # a = float(a)
-    # b = float(b)
-    # c = float(c)
-    #account for negatives
-    # if negativeA:
-    #     a = -a
-    # if negativeB:
-    #     b = -b
-    # if negativeC:
-    #     c = -c
-    #move right side of equation to left side        
-    # plus = 0
-    # exponent = False
-    # d = ""
-    # e = ""
-    # f = ""
-    # negativeD = False
-    # negativeE = False
-    # negativeF = False
-    # start = True
-    # equal = False
-    # for i in polynomial:
         if i == "=":
             equal = True
             exponent = False
             plus = 0
+            start = True
         if equal and i != "=":
             if plus == 0:
                 if start:
@@ -147,16 +123,17 @@ def solve(polynomial):
                     e += i
             elif plus == 2:
                 f += i
+    #Convert a, b, c, d, e, and f numbers           
     a = float(a)
     b = float(b)
     c = float(c)
+    #Account for negatives
     if negativeA:
         a = -a
     if negativeB:
         b = -b
     if negativeC:
         c = -c
-
     if d != "":
         d = float(d)
     else:
