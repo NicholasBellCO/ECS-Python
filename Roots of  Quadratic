@@ -168,6 +168,8 @@ def negative(b, a):
     #test if the second root can have a -1 factored out
     if -b < 0 and a < 0:
         return True
+    elif -b > 0 and (2 * a == -1):
+      return True
     else:
         return False
     
@@ -184,13 +186,12 @@ def roots(a, b, c):
                 if (math.pow(factor, 0.5)) % 1 == 0 and radicand % factor == 0:
                     radicand = int(radicand / factor)
                     coeff = int(coeff * (math.pow(factor, 0.5)))
-        #simplify if denominator is easy decimal         
+        #simplify if denominator is easy decimal 
         for i in decimals:
             if a == i or -a == i:
                 a = a / i
                 b = b / i
                 coeff = coeff / i
-
         #simplify
         for factor in range(int(coeff), 1, -1):
             if coeff % factor == 0 and (2 * a) % factor == 0 and (b) % factor == 0:
@@ -210,7 +211,7 @@ def roots(a, b, c):
             root1 += str(b) + " - "
         else:
             root1 += str(-b) + " + "
-        #if -b, a, and the coefficient are negative, factor out -1
+        #if -b and a are negative, factor out -1
         if negative(b, a):
             root2 += str(b) + " + "
         else:
