@@ -1,0 +1,20 @@
+def fareySequence(num):
+  fractions = []
+  result = []
+  for denominator in range(1, num + 1):
+    for numerator in range(0, denominator + 1):
+      fractions.append([numerator, denominator])
+  for fraction1 in fractions:
+    for fraction2 in fractions:
+      if fraction1[0] / fraction1[1] == fraction2[0] / fraction2[1] and fraction1 != fraction2:
+        fractions.remove(fraction2)
+  for i in range(len(fractions)):
+    for j in range(len(fractions)):
+      if fractions[i][0] / fractions[i][1] < fractions[j][0] / fractions[j][1]:
+        temp = fractions[i]
+        fractions[i] = fractions[j]
+        fractions[j] = temp
+  for fraction in fractions:
+    result.append(str(fraction[0]) + "/" + str(fraction[1]))
+  print(result)
+fareySequence(int(input("Enter the maximum denominator")))
