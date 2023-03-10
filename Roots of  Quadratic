@@ -29,7 +29,7 @@ def simplifyFraction(numerator, denominator):
     denominator = -denominator
     negativeDenominator = True
   for factor in range(int(numerator), 1, -1):
-      if float(numerator) % factor == 0 and float(denominator) % factor == 0:
+      if (numerator) % factor == 0 and (denominator) % factor == 0:
           numerator = checkFloat(numerator / factor)
           denominator = checkFloat(denominator / factor)
   if negativeNumerator:
