@@ -32,11 +32,10 @@ def simplifyFraction(numerator, denominator):
       if float(numerator) % factor == 0 and float(denominator) % factor == 0:
           numerator = checkFloat(numerator / factor)
           denominator = checkFloat(denominator / factor)
-
   if negativeNumerator:
     numerator = -numerator
   if negativeDenominator:
-    denominator = -denominator
+    numerator = -numerator
   result = str(checkFloat(numerator)) + "/" + str(checkFloat(denominator))
   return result
 
@@ -172,6 +171,8 @@ def negative(b, a):
     
 def roots(a, b, c):
     fractions = 0
+    root1Negative = False
+    root2Negative = True
     radicand = checkFloat((math.pow(b, 2) - 4 * a * c))
     #if roots are imaginary
     if radicand < 0:
@@ -235,11 +236,11 @@ def roots(a, b, c):
         root1 = (-b + math.pow(radicand, 0.5)) / (2 * a)
         root2 = (-b - math.pow(radicand, 0.5)) / (2 * a)
 
-        if root1 % 1 != 0:
+        if root1 % 1 != 0 and 2 * a != 1:
             fractions += 1
-        if root2 % 1 != 0:
+        if root2 % 1 != 0 and 2 * a != 1:
             fractions += 2
-        if fractions == 1:
+        if fractions == 1 and 2 * a != 1:
             choice = input("One root has a decimal, would you like it \nas a fraction?(yes/no): ")
             if choice.lower() == "yes":
                 root1 = simplifyFraction((-b + math.pow(radicand, 0.5)), (2 * a))
@@ -252,7 +253,29 @@ def roots(a, b, c):
             if choice.lower() == "yes":
                 root1 = simplifyFraction((-b + math.pow(radicand, 0.5)), (2 * a))
                 root2 = simplifyFraction((-b - math.pow(radicand, 0.5)), (2 * a))  
-            
+        if type(root1) != str and type(root2) != str:
+          if root1 > root2:
+            temp = root1
+            root1 = root2
+            root2 = temp
+        if type(root1) == str:
+          for i in root1:
+            if i == "-":
+              root1Negative = True
+          for i in root2:
+            if i == "-":
+              root2Negative == True
+        if root2Negative == True:
+          if root1Negative == False:
+            if type(root1) == str:
+              temp = root1
+              root1 = root2
+              root2 = temp
+            else:
+              if root1 >= 0:
+                temp = root1
+                root1 = root2
+                root2 = temp
         print("\nThe first root is " + str(root1))
         if root1 != root2:
             print("The second root is " + str(root2))
