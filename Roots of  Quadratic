@@ -236,9 +236,9 @@ def roots(a, b, c):
         root1 = (-b + math.pow(radicand, 0.5)) / (2 * a)
         root2 = (-b - math.pow(radicand, 0.5)) / (2 * a)
 
-        if root1 % 1 != 0 and 2 * a != 1:
+        if root1 % 1 != 0 and 2 * a != 1 and 2 * a != -1:
             fractions += 1
-        if root2 % 1 != 0 and 2 * a != 1:
+        if root2 % 1 != 0 and 2 * a != 1 and 2 * a != -1:
             fractions += 2
         if fractions == 1 and 2 * a != 1:
             choice = input("One root has a decimal, would you like it \nas a fraction?(yes/no): ")
