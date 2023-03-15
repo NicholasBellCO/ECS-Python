@@ -78,11 +78,10 @@ def solve(polynomial):
             negativeA = True
           else:
             negativeD = True
+        elif not equal:
+          a += i
         else:
-          if not equal:
-            a += i
-          else:
-            d += i
+          d += i
       elif plus == 0:
         if i == "+":
           plus += 1
@@ -92,11 +91,10 @@ def solve(polynomial):
             negativeB = True
           else:
             negativeE = True
+        elif not equal:
+          a += i
         else:
-          if not equal:
-            a += i
-          else:
-            d += i
+          d += i
       elif plus == 1:
         if i == "+":
           plus += 1
@@ -106,11 +104,10 @@ def solve(polynomial):
             negativeC = True
           else:
             negativeF = True
+        elif not equal:
+          b += i
         else:
-          if not equal:
-            b += i
-          else:
-            e += i
+          e += i
       elif plus == 2:
         if not equal:
           c += i
