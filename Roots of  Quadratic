@@ -27,6 +27,15 @@ def checkFloat(num):
     else:
         return float(num)
         
+def negative(b, a):
+    #test if the second root can have a -1 factored out
+    if -b < 0 and a < 0:
+        return True
+    elif -b > 0 and (2 * a == -1):
+      return True
+    else:
+        return False
+        
 def simplifyFraction(numerator, denominator):
   negativeNumerator = False
   negativeDenominator = False
@@ -149,15 +158,6 @@ def solve(polynomial):
         print("invalid")
     else:
         roots(a, b, c)
-    
-def negative(b, a):
-    #test if the second root can have a -1 factored out
-    if -b < 0 and a < 0:
-        return True
-    elif -b > 0 and (2 * a == -1):
-      return True
-    else:
-        return False
     
 def roots(a, b, c):
     fractions = 0
