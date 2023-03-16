@@ -255,7 +255,6 @@ def roots(a, b, c):
         
 def vertexToStandard(equation):
     equation = simplify(equation)
-    print(equation)
     negativeA = False
     negativeH = False
     negativeK = False
