@@ -58,6 +58,10 @@ def simplifyFraction(numerator, denominator):
 
 def solve(polynomial):
     #move all numbers to one side of the equation, and find a, b, c
+    x = 0
+    for i in polynomial:
+      if i == "x":
+        x += 1
     polynomial = simplify(polynomial)
     a = ""
     b = ""
@@ -157,9 +161,10 @@ def solve(polynomial):
     if a == 0:
         print("invalid")
     else:
-        roots(a, b, c)
+        roots(a, b, c, x)
     
-def roots(a, b, c):
+def roots(a, b, c, x):
+    root3 = 0
     fractions = 0
     radicand = checkFloat((b ** 2) - 4 * a * c)
     #if roots are imaginary
@@ -169,7 +174,7 @@ def roots(a, b, c):
         if radicand != 1 and int(radicand) == radicand:
             #factor out perfect squares from radical
             for factor in range(radicand, 3, -1):
-                if (factor** 0.5) % 1 == 0 and radicand % factor == 0:
+                if (factor ** 0.5) % 1 == 0 and radicand % factor == 0:
                     radicand = int(radicand / factor)
                     coeff = int(coeff * (factor ** 0.5))
         #simplify if denominator is easy decimal 
@@ -221,8 +226,8 @@ def roots(a, b, c):
         print("The second root is " + str(root2))
     else:
         #if numbers are real, calculate
-        root1 = (-b + (radicand ** 0.5)) / (2 * a)
-        root2 = (-b - (radicand ** 0.5)) / (2 * a)
+        root1 = checkFloat((-b + (radicand ** 0.5)) / (2 * a))
+        root2 = checkFloat((-b - (radicand ** 0.5)) / (2 * a))
 
         if root1 % 1 != 0 and 2 * a != 1 and 2 * a != -1:
             fractions += 1
@@ -250,6 +255,8 @@ def roots(a, b, c):
         print("\nThe first root is " + str(root1))
         if root1 != root2:
             print("The second root is " + str(root2))
+            if x == 3:
+              print("The third root is 0")
         else:
             print("There is only one root")
         
