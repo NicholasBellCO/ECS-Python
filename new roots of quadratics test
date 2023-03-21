@@ -222,6 +222,7 @@ def roots(sideA, sideB = ""):
                 root2 += ") / " + str(checkFloat(-2 * a))
             else:
                 root2 += ") / " + str(checkFloat(2 * a))
+        print()
         print("\nThe first root is " + str(root1))
         print("The second root is " + str(root2))
         if x == 3:
@@ -264,6 +265,7 @@ def roots(sideA, sideB = ""):
               roots[j][1] = root
               
         #Print roots
+        print()
         print("The first root is " + str(checkFloat(roots[0][0])))
         if roots[0][0] != roots[1][0]:
           print("The second root is " + str(checkFloat(roots[1][0])))
