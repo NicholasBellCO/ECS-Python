@@ -161,6 +161,8 @@ def solve(polynomial):
     if a == 0:
         print("invalid")
     else:
+        if x == 6:
+          x = 3
         roots(a, b, c, x)
     
 def roots(a, b, c, x):
@@ -252,18 +254,18 @@ def roots(a, b, c, x):
         #Put roots in order from least to greatest
         roots = [[((-b + (radicand ** 0.5)) / (2 * a)), root1], [((-b - (radicand ** 0.5)) / (2 * a)), root2]]
         if x == 3:
-          roots.append([0])
+          roots.append([0, "root3"])
         for i in range(len(roots)):
           for j in range(len(roots)):
             if roots[i][0] < roots[j][0]:
               tempRoot = roots[i][0]
-              labelTemp = roots[i][1]
+              root = roots[i][1]
               roots[i][0] = roots[j][0]
               roots[i][1] = roots[j][1]
               roots[j][0] = tempRoot
-              roots[j][1] = labelTemp
+              roots[j][1] = root
+              
         #Print roots
-        
         print("The first root is " + str(roots[0][0]))
         if roots[0][0] != roots[1][0]:
           print("The second root is " + str(roots[1][0]))
