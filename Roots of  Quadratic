@@ -224,6 +224,8 @@ def roots(a, b, c, x):
                 root2 += ") / " + str(checkFloat(2 * a))
         print("\nThe first root is " + str(root1))
         print("The second root is " + str(root2))
+        if x == 3:
+          print("The third root is 0")
     else:
         #if numbers are real, calculate
         root1 = checkFloat((-b + (radicand ** 0.5)) / (2 * a))
@@ -248,19 +250,33 @@ def roots(a, b, c, x):
                 root2 = simplifyFraction((-b - (radicand ** 0.5)), (2 * a))  
                 
         #Put roots in order from least to greatest
-        roots = [[((-b + (radicand ** 0.5)) / (2 * a)), "root1"], [((-b - (radicand ** 0.5)) / (2 * a)), "root2"]]
+        roots = [[((-b + (radicand ** 0.5)) / (2 * a)), root1], [((-b - (radicand ** 0.5)) / (2 * a)), root2]]
         if x == 3:
-          roots.append([0, "root3"])
+          roots.append([0])
         for i in range(len(roots)):
           for j in range(len(roots)):
-            if roots[i][0] > roots[j][0]:
+            if roots[i][0] < roots[j][0]:
               tempRoot = roots[i][0]
               labelTemp = roots[i][1]
               roots[i][0] = roots[j][0]
               roots[i][1] = roots[j][1]
               roots[j][0] = tempRoot
               roots[j][1] = labelTemp
-              
+        #Print roots
+        
+        print("The first root is " + str(roots[0][0]))
+        if roots[0][0] != roots[1][0]:
+          print("The second root is " + str(roots[1][0]))
+          if x == 3:
+            if roots[2][0] != roots[0][0] and roots[2][0] != roots[1][0]:
+              print("The third root is " + str(roots[2][0]))
+        elif x == 3:
+          if roots[0][0] != roots[2][0]:
+            print("The second root is " + str(roots[2][0]))
+          else:
+            print("There is only one root")
+        else:
+          print("There is only one root")
           
 def vertexToStandard(equation):
     equation = simplify(equation)
