@@ -230,8 +230,8 @@ def roots(a, b, c, x):
           print("The third root is 0")
     else:
         #if numbers are real, calculate
-        root1 = checkFloat((-b + (radicand ** 0.5)) / (2 * a))
-        root2 = checkFloat((-b - (radicand ** 0.5)) / (2 * a))
+        root1 = (-b + (radicand ** 0.5)) / (2 * a)
+        root2 = (-b - (radicand ** 0.5)) / (2 * a)
 
         if root1 % 1 != 0 and 2 * a != 1 and 2 * a != -1:
             fractions += 1
@@ -266,15 +266,15 @@ def roots(a, b, c, x):
               roots[j][1] = root
               
         #Print roots
-        print("The first root is " + str(roots[0][0]))
+        print("The first root is " + str(checkFloat(roots[0][0])))
         if roots[0][0] != roots[1][0]:
-          print("The second root is " + str(roots[1][0]))
+          print("The second root is " + str(checkFloat(roots[1][0])))
           if x == 3:
             if roots[2][0] != roots[0][0] and roots[2][0] != roots[1][0]:
-              print("The third root is " + str(roots[2][0]))
+              print("The third root is " + str(checkFloat(roots[2][0])))
         elif x == 3:
           if roots[0][0] != roots[2][0]:
-            print("The second root is " + str(roots[2][0]))
+            print("The second root is " + str(checkFloat(roots[2][0])))
           else:
             print("There is only one root")
         else:
@@ -327,6 +327,7 @@ def vertexToStandard(equation):
     b = 2 * a * h
     c =((h ** 2) * a) + k
     roots(a, b, c)
+    
 #Main
 stop = False
 while stop == False:
