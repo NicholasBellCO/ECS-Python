@@ -337,8 +337,9 @@ def vertexToStandard(equation):
     
 #Main
 stop = False
+print("ax^2 + bx + c\nax^2 + bx + c = dx^2 + ex + f\na(x - h)^2 + k\na(x - h)^2 + k = a(x - h)^2 + k\nax^2 + bx + c = a(x - h)^2 + k\nax^3 + bx^2 + cx\nax^3 + bx^2 + cx = dx^3 + ex^2 + fx")
 while stop == False:
-    function = input("\nEnter a quadratic in either vertex or standard form\na(x - h)^2 + k\nax^2 + bx + c\nax^2 + bx + c = dx^2 + ex + f\n\n")
+    function = input("\nEnter a quadratic\n\n")
     sideA = ""
     sideB = ""
     equal = False
