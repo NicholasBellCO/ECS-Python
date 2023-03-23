@@ -1,23 +1,19 @@
 #Solves quadratics
-decimals = [0.5, 0.25, 0.2, 0.125, 0.1, 0.0625, 0.05, 0.04, 0.01]
 def simplify(string):
     #remove non valid characters
     result = ""
-    resultFinal = ""
-    valid = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "=", "^", "."]
+    valid = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "."]
     exponent = False
     for i in string:
-      for j in valid:
-          if i == j:
-              result += i
-    for i in result:
-      if i == "^":
-        exponent = True
-      elif not exponent:
-        resultFinal += i
-      else:
+      if exponent:
         exponent = False
-    return resultFinal
+      else:
+        for j in valid:
+            if i == "^":
+              exponent = True
+            elif i == j:
+                result += i
+    return result
 
 def checkFloat(num):
     if float(num) % 1 == 0:
@@ -58,16 +54,15 @@ def simplifyFraction(numerator, denominator):
 
 def abc(polynomial):
     parentheses = 0
+    x = 0
     for i in polynomial:
         if i =="(" or i == ")":
             parentheses += 1
+        elif i == "x":
+          x += 1
     if parentheses == 2:
         polynomial = vertexToStandard(polynomial)
-    #move all numbers to one side of the equation, and find a, b, c
-    x = 0
-    for i in polynomial:
-      if i == "x":
-        x += 1
+    #Find a, b, c
     polynomial = simplify(polynomial)
     if polynomial == "":
       return ""
@@ -126,6 +121,7 @@ def roots(sideA, sideB = ""):
     d = ""
     e = ""
     f = ""
+    #Extract abcdef and put all on one side
     for i in sideA:
       if i == "_":
         place += 1
@@ -162,6 +158,7 @@ def roots(sideA, sideB = ""):
     if f != "":
       f = float(f)
       c -= f
+
     if x == 6:
       x = 3
     root3 = 0
@@ -264,7 +261,7 @@ def roots(sideA, sideB = ""):
               roots[j][0] = tempRoot
               roots[j][1] = root
               
-        #Print roots
+        #Print roots, not printing identical roots
         print()
         print("The first root is " + str(checkFloat(roots[0][0])))
         if roots[0][0] != roots[1][0]:
@@ -337,6 +334,7 @@ def vertexToStandard(equation):
     
 #Main
 stop = False
+decimals = [0.5, 0.25, 0.2, 0.125, 0.1, 0.0625, 0.05, 0.04, 0.01]
 print("ax^2 + bx + c\nax^2 + bx + c = dx^2 + ex + f\na(x - h)^2 + k\na(x - h)^2 + k = a(x - h)^2 + k\nax^2 + bx + c = a(x - h)^2 + k\nax^3 + bx^2 + cx\nax^3 + bx^2 + cx = dx^3 + ex^2 + fx")
 while stop == False:
     function = input("\nEnter a quadratic\n\n")
