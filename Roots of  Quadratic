@@ -354,5 +354,3 @@ while stop == False:
     stop = input("Do you want to enter another?(no to stop): ")
     if stop.lower() == "no":
         stop = True
-    else:
-        stop = False
