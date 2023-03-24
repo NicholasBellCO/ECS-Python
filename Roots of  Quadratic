@@ -1,19 +1,26 @@
 #Solves quadratics
 def simplify(string):
     #remove non valid characters
-    result = ""
     valid = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "."]
-    exponent = False
+    resultA = ""
+    resultB = ""
     for i in string:
+      if i == "^":
+        resultA += i
+      for j in valid:
+        if i == j:
+          resultA += i
+    exponent = False
+    for i in resultA:
       if exponent:
         exponent = False
+      elif i == "^":
+        exponent = True
       else:
         for j in valid:
-            if i == "^":
-              exponent = True
-            elif i == j:
-                result += i
-    return result
+            if i == j:
+              resultB += i
+    return resultB
 
 def checkFloat(num):
     if float(num) % 1 == 0:
@@ -118,7 +125,7 @@ def roots(sideA, sideB = ""):
     d = ""
     e = ""
     f = ""
-    #Extract abcdef and put all on one side
+    #Put everything on one side of the equation and determine cubic or quadratic
     for i in sideA:
       if i == "_":
         place += 1
@@ -155,7 +162,6 @@ def roots(sideA, sideB = ""):
     if f != "":
       f = float(f)
       c -= f
-
     if x == 6:
       x = 3
     root3 = 0
