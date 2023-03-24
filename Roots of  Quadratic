@@ -25,10 +25,8 @@ def checkFloat(num):
         
 def negative(b, a):
     #test if the second root can have a -1 factored out
-    if -b < 0 and a < 0:
+    if (-b < 0 and a < 0) or (-b > 0 and (2 * a == -1)):
         return True
-    elif -b > 0 and (2 * a == -1):
-      return True
     else:
         return False
         
@@ -49,8 +47,7 @@ def simplifyFraction(numerator, denominator):
     numerator = -numerator
   if negativeDenominator:
     numerator = -numerator
-  result = str(checkFloat(numerator)) + "/" + str(checkFloat(denominator))
-  return result
+  return (str(checkFloat(numerator)) + "/" + str(checkFloat(denominator)))
 
 def abc(polynomial):
     parentheses = 0
@@ -250,7 +247,7 @@ def roots(sideA, sideB = ""):
         #Put roots in order from least to greatest
         roots = [[((-b + (radicand ** 0.5)) / (2 * a)), root1], [((-b - (radicand ** 0.5)) / (2 * a)), root2]]
         if x == 3:
-          roots.append([0, "root3"])
+          roots.append([0, 0])
         for i in range(len(roots)):
           for j in range(len(roots)):
             if roots[i][0] < roots[j][0]:
@@ -263,15 +260,31 @@ def roots(sideA, sideB = ""):
               
         #Print roots, not printing identical roots
         print()
-        print("The first root is " + str(checkFloat(roots[0][0])))
+        print("The first root is ", end="")
+        if type(roots[0][1]) != str:
+          print(str(checkFloat(roots[0][1])))
+        else:
+          print(roots[0][1])
         if roots[0][0] != roots[1][0]:
-          print("The second root is " + str(checkFloat(roots[1][0])))
+          print("The second root is ", end ="")
+          if type(roots[1][1]) != str:
+            print(str(checkFloat(roots[1][1])))
+          else:
+            print(roots[1][1])
           if x == 3:
             if roots[2][0] != roots[0][0] and roots[2][0] != roots[1][0]:
-              print("The third root is " + str(checkFloat(roots[2][0])))
+              print("The third root is ", end = "")
+              if type(roots[2][1]) != str:
+                print(str(checkFloat(roots[2][1])))
+              else:
+                print(roots[2][1])
         elif x == 3:
           if roots[0][0] != roots[2][0]:
-            print("The second root is " + str(checkFloat(roots[2][0])))
+            print("The second root is ", end="")
+            if type(roots[2][1]) != str:
+              print(str(checkFloat(roots[2][1])))
+            else:
+              print(roots[2][1])
           else:
             print("There is only one root")
         else:
