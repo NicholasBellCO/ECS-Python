@@ -50,6 +50,8 @@ def simplifyFraction(numerator, denominator):
   return (str(checkFloat(numerator)) + "/" + str(checkFloat(denominator)))
 
 def abc(polynomial):
+    if polynomial == "":
+      return ""
     parentheses = 0
     x = 0
     for i in polynomial:
@@ -58,11 +60,9 @@ def abc(polynomial):
         elif i == "x":
           x += 1
     if parentheses == 2:
-        polynomial = vertexToStandard(polynomial)
+        return vertexToStandard(polynomial)
     #Find a, b, c
     polynomial = simplify(polynomial)
-    if polynomial == "":
-      return ""
     a = ""
     b = ""
     c = ""
@@ -336,14 +336,7 @@ def vertexToStandard(equation):
       k = -k
     b = 2 * a * h
     c =((h ** 2) * a) + k
-    result = str(a)
-    if b >= 0:
-      result += "+"
-    result += str(b)
-    if c >= 0:
-      result += "+"
-    result += str(c)
-    return result
+    return str(a) + "_" + str(b) + "_" + str(c) + "_" + "2"
     
 #Main
 stop = False
