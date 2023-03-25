@@ -2,21 +2,21 @@
 def simplify(string):
     #remove non valid characters
     valid = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", ".", "^"]
-    resultA = ""
-    resultB = ""
+    result = ""
+    resultFinal = ""
     for i in string:
       for j in valid:
         if i == j:
-          resultA += i
+          result += i
     exponent = False
-    for i in resultA:
+    for i in result:
       if exponent:
         exponent = False
       elif i == "^":
         exponent = True
       else:
-        resultB += i
-    return resultB
+        resultFinal += i
+    return resultFinal
 
 def checkFloat(num):
     if float(num) % 1 == 0:
@@ -149,14 +149,12 @@ def roots(sideA, sideB = ""):
     a = float(a)
     b = float(b)
     c = float(c)
-    if d != "":
+    if sideB != "":
       d = float(d)
-      a -= d
-    if e != "":
       e = float(e)
-      b -= e
-    if f != "":
       f = float(f)
+      a -= d
+      b -= e
       c -= f
     if x == 6:
       x = 3
