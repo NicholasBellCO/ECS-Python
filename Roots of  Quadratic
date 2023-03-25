@@ -1,12 +1,10 @@
 #Solves quadratics
 def simplify(string):
     #remove non valid characters
-    valid = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "."]
+    valid = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", ".", "^"]
     resultA = ""
     resultB = ""
     for i in string:
-      if i == "^":
-        resultA += i
       for j in valid:
         if i == j:
           resultA += i
@@ -17,9 +15,7 @@ def simplify(string):
       elif i == "^":
         exponent = True
       else:
-        for j in valid:
-            if i == j:
-              resultB += i
+        resultB += i
     return resultB
 
 def checkFloat(num):
