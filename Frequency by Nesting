@@ -1,6 +1,6 @@
 def freq(numList, num):
   output = []
-  nest = 0
+  nest = -1
   count = 0
   numList = str(numList)
   for i in numList:
@@ -9,13 +9,13 @@ def freq(numList, num):
       count += 1
     elif i == "]":
       count -= 1
-  for i in range(len(output)):
-    for j in range(i, len(output)):
-      if output[j] == output[i] and i != j:
-        output[j] = ""
-        output.remove(output[j])
-        break
-  print(output)
+  for a in range(len(output)):
+    for i in range(len(output)):
+      for j in range(i, len(output)):
+        if output[j] == output[i] and i != j:
+          output[j] = ""
+          output.remove(output[j])
+          break
   for character in numList:
     if character == "[":
       nest += 1
@@ -23,6 +23,6 @@ def freq(numList, num):
       nest -= 1
     elif character == str(num):
       output[nest][1] += 1
-  print(output)
+  return output
   
-freq([1, 5, 5, [5, [1, 2, 1, 1], 5, 5], 5, [5]], 5)
+print(freq([1, 4, 4, [1, 1, [1, 2, 1, 1]]], 1))
