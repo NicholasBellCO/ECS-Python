@@ -1,0 +1,33 @@
+def prime(num):
+  factors = 0
+  for factor in range(num + 1, 0, -1):
+    if num % factor == 0:
+      factors += 1
+      num = num / factor
+  if factors == 2:
+    return True
+def economical(num):
+  factors = []
+  length = 0
+  for i in str(num):
+    length += 1
+  for factor in range(num + 1, 0, -1):
+    if num % factor == 0 and prime(factor):
+      num = num / factor
+      factors.append(factor)
+  for i in range(len(factors)):
+    numCount = 0
+    for j in range(len(factors)):
+      if i != j and factors[i] == factors[j]:
+        factors.remove(factors[j])
+        numCount += 1
+    if numCount > 0:
+      factors.append(2)
+  if len(factors) == length:
+    return "Equidigital"
+  elif len(factors) < length:
+    return "Frugal"
+  else:
+    return "Wasteful"
+    
+print(economical(14))
