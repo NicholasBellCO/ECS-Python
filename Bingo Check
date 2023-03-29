@@ -1,4 +1,3 @@
-#Checks for a bingo on bingo boards in the format shown below
 def bingo(board):
     stop = 0
     for i in range(len(board[0])):
