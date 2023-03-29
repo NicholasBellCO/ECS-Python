@@ -21,7 +21,7 @@ def checkNum(num):
         if number == num:
             return True 
                 
-def ECG(num, b):
+def EKG(num, b):
     stop = False
     while stop == False:
         number = 2
@@ -36,4 +36,4 @@ def ECG(num, b):
     for i in range(len(sequence)):
         if sequence[i] == num:
             print(str(num) + " is at index " + str(i))
-ECG(200, 400)
+EKG(200, 400)
