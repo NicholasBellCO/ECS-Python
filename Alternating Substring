@@ -1,0 +1,47 @@
+def length(string):
+  length = 0
+  for i in string:
+    length += 1
+  return length
+  
+def substring(string):
+  substrings = []
+  newString = []
+  substring = ""
+  for i in string:
+    newString.append(i)
+    start = True
+    even = False
+    lastEven = False
+  for j in range(len(newString)):
+    substrings.append(substring)
+    substring = ""
+    start = True
+    for i in range(j, len(newString)):
+      if even:
+        lastEven = True
+      elif not even:
+        lastEven = False
+      if start:
+        start = False
+        if int(newString[i]) % 2 == 0:
+          lastEven = False
+        else:
+          lastEven = True
+      if int(newString[i]) % 2 == 0:
+        even = True
+      else:
+        even = False
+      if (even and lastEven) or (not even and not lastEven):
+        break
+      else:
+        substring += newString[i]
+  for i in range(len(substrings)):
+    for j in range(len(substrings)):
+      if length(substrings[j]) < length(substrings[i]):
+        temp = substrings[i]
+        substrings[i] = substrings[j]
+        substrings[j] = temp
+  return substrings[0]
+
+print(substring("225424272163254474441338664823"))
