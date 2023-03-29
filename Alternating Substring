@@ -1,3 +1,4 @@
+#Finds the longest sequence of alternating odds and evens in a sequence
 def length(string):
   length = 0
   for i in string:
