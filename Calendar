@@ -26,14 +26,12 @@ def days_passed(d, m, y):
         n += number_of_days(i, y)
     return n + d - 1
     
-#Main part
-
+#Main Part
 day = int(input("Please enter a date\nDay: "))
 month = int(input("Month: "))
 year = int(input("Year: "))
 
 choice = int(input("Menu\n1) Calculate the number of days in the given month.\n2) Calculate the number of days passed in the given year.\n"))
-
 if choice == 1:
     print(number_of_days(month, year))
 else:
