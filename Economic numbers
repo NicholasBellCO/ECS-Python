@@ -31,4 +31,4 @@ def economical(num):
   else:
     return "Wasteful"
     
-print(economical(1024))
+print(economical(125))
