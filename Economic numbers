@@ -1,11 +1,12 @@
 def prime(num):
   factors = 0
-  for factor in range(num + 1, 0, -1):
+  for factor in range(num, 0, -1):
     if num % factor == 0:
       factors += 1
-      num = num / factor
   if factors == 2:
     return True
+  else:
+    return False
 def economical(num):
   factors = []
   length = 0
@@ -30,4 +31,4 @@ def economical(num):
   else:
     return "Wasteful"
     
-print(economical(14))
+print(economical(1024))
