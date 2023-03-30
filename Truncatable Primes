@@ -59,7 +59,7 @@ def truncatable(num):
     if total == digits:
         numType += 2
         
-    #Determine if number is left, right, both, or neither type of truncatable prime
+    #Determine if number is left truncatable, right truncatable, both, or neither
     if numType == 3:
         return("both a left and right truncatable prime")
     elif numType == 2:
@@ -68,9 +68,7 @@ def truncatable(num):
         return("a left truncatable prime")
     else:
         return("not a left or right truncatable prime")
-     
-     
-#Main   
+#Main
 numbers = [9137, 5939, 317, 5, 139, 103]
 for number in numbers:
     print(str(number) + " is " + truncatable(number))
