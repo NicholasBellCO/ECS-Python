@@ -18,7 +18,8 @@ def quartiles(nums):
       q1 = nums[int((((len(nums) + 1) / 2) - 1) / 2)]
       q3 = nums[int(((((len(nums) + 1) / 2) - 1) + (len(nums) - 1)) / 2) + 1]
     else:
-      q1 = 
+      q1 = (nums[int(((len(nums) + 1) / 2) - 1) + (len(nums) - 1) / 4))] + nums[int((((len(nums) + 1) / 2) - 1) + (len(nums) - 1) / 4) + 1))]) / 2
+      q3 = (nums[int(((len(nums) + 1) / 2) - 1) - (len(nums) - 1) / 4))] + nums[int((((len(nums) + 1) / 2) - 1) - (len(nums) - 1) / 4) + 1))]) / 2
   print("q0 = " + str(q0) + "\nq1 = " + str(q1) + "\nq2 = " + str(q2) + "\nq3 = " + str(q3) + "\nq4 = " + str(q4))
   
 quartiles([13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
