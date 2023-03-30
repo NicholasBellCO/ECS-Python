@@ -1,4 +1,4 @@
-def fareySequence(num):
+def farey(num):
   fractions = []
   result = []
   for denominator in range(1, num + 1):
@@ -17,4 +17,4 @@ def fareySequence(num):
   for fraction in fractions:
     result.append(str(fraction[0]) + "/" + str(fraction[1]))
   print(result)
-fareySequence(int(input("Enter the maximum denominator")))
+farey(int(input("Enter the maximum denominator")))
