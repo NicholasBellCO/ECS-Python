@@ -258,7 +258,7 @@ def roots(sideA, sideB = ""):
               roots[j][0] = tempRoot
               roots[j][1] = root
               
-        #Print roots, not printing identical roots
+        #Print roots, excluding duplicates
         print()
         print("The first root is ", end="")
         if type(roots[0][1]) != str:
