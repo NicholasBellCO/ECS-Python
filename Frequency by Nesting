@@ -1,4 +1,4 @@
-def freq(numList, num):
+def frequency(numList, num):
   output = []
   nest = -1
   count = 0
@@ -25,4 +25,4 @@ def freq(numList, num):
       output[nest][1] += 1
   return output
   
-print(freq([1, 4, 4, [1, 1, [1, 2, 1, 1]]], 1))
+print(frequency([1, 4, 4, [1, 1, [1, 2, 1, 1]]], 1))
