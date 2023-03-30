@@ -1,0 +1,24 @@
+def quartiles(nums):
+  for i in range(len(nums)):
+    for j in range(len(nums)):
+      if nums[j] > nums[i]:
+        temp = nums[i]
+        nums[i] = nums[j]
+        nums[j] = temp
+  print(nums)
+  q0 = nums[0]
+  q4 = nums[len(nums) - 1]
+  if len(nums) % 2 == 0:
+    q1 = nums[int(len(nums) / 4)]
+    q2 = (nums[int((len(nums) / 2) - 1)] + nums[int(len(nums) / 2)]) / 2
+    q3 = nums[int(((len(nums) / 2) + len(nums)) / 2)]
+  else:
+    q2 = nums[int((len(nums) + 1) / 2) - 1]
+    if ((len(nums) - 1) / 2) % 2 != 0:
+      q1 = nums[int((((len(nums) + 1) / 2) - 1) / 2)]
+      q3 = nums[int(((((len(nums) + 1) / 2) - 1) + (len(nums) - 1)) / 2) + 1]
+    else:
+      q1 = 
+  print("q0 = " + str(q0) + "\nq1 = " + str(q1) + "\nq2 = " + str(q2) + "\nq3 = " + str(q3) + "\nq4 = " + str(q4))
+  
+quartiles([13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
