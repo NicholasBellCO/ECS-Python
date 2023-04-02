@@ -1,0 +1,29 @@
+def square(points):
+  minX = points[0][0]
+  maxX = points[0][0]
+  minY = points[0][1]
+  maxY = points[0][1]
+  for i in points:
+    if i[0] < minX:
+      minX = i[0]
+    if i[0] > maxX:
+      maxX = i[0]
+    if i[1] < minY:
+      minY = i[1]
+    if i[1] > maxY:
+      maxY = i[1]
+    
+  if not [maxX, maxY] in points or not [minX, minY] in points:
+    return "Not a square"
+  newPoints = [[minX, minY], [maxX, maxY]]
+  for i in points:
+    if i == [maxX, minY]:
+      newPoints.insert(1, [maxX, minY])
+    if i == [minX, maxY]:
+      newPoints.append([minX, maxY])
+  if len(newPoints) == 4:
+    return "Square"
+  else:
+    return "Not a square"
+
+print(square([[0, 0], [4, 0], [4, 4], [0, 4]]))
