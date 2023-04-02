@@ -54,7 +54,7 @@ def simplifyFraction(numerator, denominator):
 
 def abc(polynomial):
     if polynomial == "":
-      return ""
+      return [0, 0, 0, 0]
     parentheses = 0
     x = 0
     for i in polynomial:
@@ -110,52 +110,14 @@ def abc(polynomial):
         b = -b
     if negativeC:
         c = -c
-    return str(a) + "_" + str(b) + "_" + str(c) + "_" + str(x)
+    return [a, b, c, x]
     
-def roots(sideA, sideB = ""):
-    place = 0
-    x = 0
-    a = ""
-    b = ""
-    c = ""
-    d = ""
-    e = ""
-    f = ""
-    #Put everything on one side of the equation and determine cubic or quadratic
-    for i in sideA:
-      if i == "_":
-        place += 1
-      elif place == 0:
-        a += i
-      elif place == 1:
-        b += i
-      elif place == 2:
-        c += i
-      elif place == 3:
-        x += int(i)
-    place = 0
-    for i in sideB:
-      if i == "_":
-        place += 1
-      elif place == 0:
-        d += i
-      elif place == 1:
-        e += i
-      elif place == 2:
-        f += i
-      elif place == 3:
-        x += int(i)
-        
-    a = float(a)
-    b = float(b)
-    c = float(c)
-    if sideB != "":
-      d = float(d)
-      e = float(e)
-      f = float(f)
-      a -= d
-      b -= e
-      c -= f
+def roots(sideA, sideB):
+    #Move everything to one side of the equation
+    a = sideA[0] - sideB[0]
+    b = sideA[1] - sideB[1]
+    c = sideA[2] - sideB[2]
+    x = sideA[3] + sideB[3]
     if x == 6:
       x = 3
     root3 = 0
@@ -336,13 +298,13 @@ def vertexToStandard(equation):
       k = -k
     b = 2 * a * h
     c =((h ** 2) * a) + k
-    return str(a) + "_" + str(b) + "_" + str(c) + "_" + "2"
+    return [a, b, c, 2]
     
 #Main
-stop = False
+stop = ""
 decimals = [0.5, 0.25, 0.2, 0.125, 0.1, 0.0625, 0.05, 0.04, 0.01]
 print("ax^2 + bx + c\nax^2 + bx + c = dx^2 + ex + f\na(x - h)^2 + k\na(x - h)^2 + k = a(x - h)^2 + k\nax^2 + bx + c = a(x - h)^2 + k\nax^3 + bx^2 + cx\nax^3 + bx^2 + cx = dx^3 + ex^2 + fx")
-while stop == False:
+while stop.lower() != "no":
     function = input("\nEnter a quadratic\n\n")
     sideA = ""
     sideB = ""
@@ -356,5 +318,3 @@ while stop == False:
         sideB += i
     roots(abc(sideA), abc(sideB))
     stop = input("Do you want to enter another?(no to stop): ")
-    if stop.lower() == "no":
-        stop = True
