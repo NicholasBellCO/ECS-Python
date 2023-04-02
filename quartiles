@@ -11,22 +11,13 @@ def quartiles(nums):
   q4 = nums[len(nums) - 1]
   if len(nums) % 2 == 0:
     q2 = (nums[int((len(nums) / 2) - 1)] + nums[int(len(nums) / 2)]) / 2
-    indexA = 0
-    indexB = int(len(nums) / 2)
-    while len(sideA) < (len(nums) / 2):
-      sideA.append(nums[indexA])
-      sideB.append(nums[indexB])
-      indexA += 1
-      indexB += 1
+    sideA = nums[slice(0, int((len(nums) / 2)))]
+    sideB = nums[slice(int((len(nums)) / 2), len(nums))]
   else:
     q2 = nums[int((len(nums) + 1) / 2) - 1]
-    indexA = 0
-    indexB = int((len(nums) + 1) / 2)
-    while len(sideA) < (len(nums) - 1) / 2:
-      sideA.append(nums[indexA])
-      sideB.append(nums[indexB])
-      indexA += 1
-      indexB += 1
+    sideA = nums[slice(0, int((len(nums) + 1) / 2) - 1)]
+    sideB = nums[slice(int((len(nums) + 1) / 2), len(nums))]
+    print(sideA, sideB)
   if len(sideA) % 2 == 0:
     q1 = (sideA[int((len(sideA) / 2) - 1)] + sideA[int(len(sideA) / 2)]) / 2
     q3 = (sideB[int((len(sideB) / 2) - 1)] + sideB[int(len(sideB) / 2)]) / 2
@@ -36,3 +27,4 @@ def quartiles(nums):
   print("q0 = " + str(q0) + "\nq1 = " + str(q1) + "\nq2 = " + str(q2) + "\nq3 = " + str(q3) + "\nq4 = " + str(q4))
   
 quartiles([14, 15, 13, 4, 11, 10, 9, 8, 7, 1, 5, 12, 3, 2, 6])
+quartiles([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
