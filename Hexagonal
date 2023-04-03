@@ -1,40 +1,33 @@
 def hexagonal(num):
   for i in range(1, num + 1, 2):
-    hex = []
-    row = []
+    hexA = []
+    row = ["\n"]
     length = i
     rowStart = length
     for i in range(length):
       row.append("O ")
-    hex.append(row)
-    while len(hex) < rowStart:
-      row = []
+    hexA.append(row)
+    while len(hexA) < rowStart:
+      row = ["\n"]
       length -= 1
       for i in range(length):
         row.append("O ")
-      hex.insert(0, row)
-      hex.append(row)
+      hexA.insert(0, row)
+      hexA.append(row)
     elements = 0
-    for i in hex:
+    for i in hexA:
       for j in i:
-        elements += 1
-    if len(hex) == rowStart and elements == num:
-      print(rowStart)
-      for row in hex:
-        for i in range(rowStart - len(row)):
-          row.insert(0, " ")
-      # for row in hex:
-      #   for i in range(len(row)):
-      #     if i != len(row) - 1:
-      #       print(row[i], end ="")
-      #     else:
-      #       print(row[i])
-      for i in hex:
-        i.insert(0, "\n")
-      return hex
-  return "Not hexagonal"
-      
+        if j != "\n":
+          elements += 1
+    if elements == num:
+      for row in hexA:
+        for i in range(rowStart - len(row) + 1):
+          row.insert(1, " ")
+      hexB = ""
+      for row in hexA:
+        for element in row:
+          hexB += element
+      return hexB
+  return "Invalid"
+
 print(hexagonal(37))
-for i in hexagonal(37):
-  for j in i:
-    print(j, end="")
