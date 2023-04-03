@@ -1,0 +1,14 @@
+def josephus(num, step):
+  step = step - 1
+  people = []
+  place = 0
+  for i in range(num):
+    people.append(i + 1)
+  while len(people) > 1:
+    place += step
+    while place > len(people) - 1:
+      place -= len(people)
+    people.pop(place)
+  return people[0]
+
+print(josephus(41, 3))
