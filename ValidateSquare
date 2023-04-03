@@ -1,4 +1,4 @@
-def square(points):
+def validateSquare(points):
   minX = points[0][0]
   maxX = points[0][0]
   minY = points[0][1]
@@ -26,4 +26,4 @@ def square(points):
   else:
     return "Not a square"
 
-print(square([[0, 0], [4, 0], [4, 4], [0, 4]]))
+print(validateSquare([[0, 0], [4, 0], [4, 4], [0, 4]]))
