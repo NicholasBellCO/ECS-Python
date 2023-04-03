@@ -21,7 +21,7 @@ def square(points):
       newPoints.insert(1, [maxX, minY])
     if i == [minX, maxY]:
       newPoints.append([minX, maxY])
-  if len(newPoints) == 4:
+  if len(newPoints) == 4 and (points[1][0] - points[0][0]) == (points[3][1] - points[0][1]):
     return "Square"
   else:
     return "Not a square"
