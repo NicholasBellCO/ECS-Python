@@ -1,5 +1,5 @@
 def hexagonal(num):
-  for i in range(1, num + 1):
+  for i in range(1, num + 1, 2):
     hex = []
     row = []
     length = i
@@ -7,7 +7,7 @@ def hexagonal(num):
     for i in range(length):
       row.append("O")
     hex.append(row)
-    while length > 1:
+    while len(hex) < rowStart:
       row = []
       length -= 1
       for i in range(length):
@@ -19,6 +19,7 @@ def hexagonal(num):
       for j in i:
         elements += 1
     if len(hex) == rowStart and elements == num:
+      print(rowStart)
       return hex
   return "Not hexagonal"
       
