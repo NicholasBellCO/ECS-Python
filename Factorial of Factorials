@@ -1,0 +1,13 @@
+def factorial(num):
+  result = 1
+  for i in range(num, 0, -1):
+    result = result * i
+  return result
+  
+def factOfFact(num):
+  result = 1
+  for i in range(1, num + 1):
+    result = result * factorial(i)
+  return result
+
+print(factOfFact(81))
