@@ -1,0 +1,14 @@
+def triple(num):
+  triples = [[1, 2, 5]]
+  c = 5
+  while len(triples) < num:
+    used = False
+    while not used:
+      c += 1
+      for a in range(c, 0, -1):
+        if a**2 + (a + 1)**2 == c**2:
+          triples.append([a, a + 1, c])
+          used = True
+  return triples
+  
+print(triple(4))
