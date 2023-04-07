@@ -5,14 +5,10 @@ def consecutive(string):
     if len(string) % split == 0:
       nums = []
       for i in range(0, len(string), split):
-        # print(i)
         row = ""
         for j in range(i, i + split):
-          # print(str(j) + "j")
           row += string[j]
-        # print(str(row))
         nums.append(int(row))
-      # print(nums)
       if nums[1] > nums[0]:
         for i in range(1, len(nums)):
           if nums[i] < nums[i - 1]:
@@ -28,4 +24,4 @@ def consecutive(string):
         return True
   return False
   
-print(consecutive("326325324323"))
+print(consecutive("726353948234"))
