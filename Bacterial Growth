@@ -6,14 +6,13 @@ def growth(finalMass):
     updates = {}
     for i in bacteria:
       bacteria[i] = bacteria[i] / 2
-      updates.update({"bacteria" + str(len(bacteria) + 1) : bacteria[i]})
+      updates.update({"bacteria" + str(len(bacteria) + len(updates) + 1) : bacteria[i]})
     bacteria.update(updates)
     mass = 0
     for i in bacteria:
       bacteria[i] += 1
       mass += bacteria[i]
     days += 1
-  print(bacteria)
   return days
 
-print(growth(548))
+print(growth(5467))
