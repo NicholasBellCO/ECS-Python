@@ -1,20 +1,20 @@
 def cipher(keyWord, message):
+  keyWord = keyWord.lower()
   result = ""
   key = []
   for letter in keyWord:
-    key.append(letter.lower())
-    letters.remove(letter.lower())
-  for letter in letters:
     key.append(letter)
-  for letter in keyWord:
+  for letter in letters:
+    if letter not in key:
+      key.append(letter)
+  for letter in message:
     for i in range(len(letters)):
-      if letters[i] == letter.lower():
+      if letters[i] == letter:
         result += key[i]
   return result
-  
   
 letters = ["a", "b", "c", "d", "e", "f", "g", 
            "h", "i", "j", "k", "l", "m", "n", "o", "p", 
            "q", "r", "s", "t", "u", "v", 
            "w", "x", "y", "z"]
-cipher("KeyWord", "abcd")
+print(cipher("KeyWord", "abcd"))
