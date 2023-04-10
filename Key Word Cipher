@@ -1,11 +1,16 @@
 def cipher(keyWord, message):
+  result = ""
   key = []
   for letter in keyWord:
     key.append(letter.lower())
     letters.remove(letter.lower())
   for letter in letters:
     key.append(letter)
-  print(key)
+  for letter in keyWord:
+    for i in range(len(letters)):
+      if letters[i] == letter.lower():
+        result += key[i]
+  return result
   
   
 letters = ["a", "b", "c", "d", "e", "f", "g", 
