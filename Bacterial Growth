@@ -1,0 +1,19 @@
+def growth(finalMass):
+  mass = 1
+  days = 0
+  bacteria = {"bacteria1" : 1}
+  while mass < finalMass:
+    updates = {}
+    for i in bacteria:
+      bacteria[i] = bacteria[i] / 2
+      updates.update({"bacteria" + str(len(bacteria) + 1) : bacteria[i]})
+    bacteria.update(updates)
+    mass = 0
+    for i in bacteria:
+      bacteria[i] += 1
+      mass += bacteria[i]
+    days += 1
+  print(bacteria)
+  return days
+
+print(growth(548))
