@@ -1,0 +1,23 @@
+def distance(x1, x2, y1, y2):
+  return (((x2 - x1) ** 2) + ((y2 - y1) ** 2)) ** 0.5
+
+def bomb(sensors):
+  x1 = sensors[0][0]
+  y1 = sensors[0][1]
+  t1 = sensors[0][2]
+  x2 = sensors[1][0]
+  y2 = sensors[1][1]
+  t2 = sensors[1][2]
+  x3 = sensors[2][0]
+  y3 = sensors[2][1]
+  t3 = sensors[2][2]
+  d1 = round(t1 * 0.343)
+  d2 = round(t2 * 0.343)
+  d3 = round(t3 * 0.343)
+  for x in range(51):
+    for y in range(51):
+      if round(distance(x1, x, y1, y)) == d1 and round(distance(x2, x, y2, y)) == d2 and round(distance(x3, x, y3, y)) == d3:
+        return (x, y)
+  return "Invalid"
+        
+print(bomb([[18, 42, 35.558], [39, 16, 106.004], [7, 24, 32.202]]))
