@@ -688,7 +688,10 @@ def syntheticDivision(function, stop = False):
       if LC % lcFactor == 0:
         q.append(lcFactor)
         q.append(-lcFactor)
-
+    
+    if stop:
+      q = [1]
+      p = [-abc((input("\nEnter the divisor\nx - a\n")))[1]]
     for pFactor in p:
       for qFactor in q:
         if pFactor / qFactor not in possible:
@@ -700,9 +703,11 @@ def syntheticDivision(function, stop = False):
         coefficients.append((coefficients[i] * factor) + nums[i + 1])
       #If the remainder is zero, record factor and start over with new polynomial
       if stop:
-        print("The remainder is " + str(checkFloat(nums[len(nums) - 1])))
-        nums.pop(len(nums) - 1)
-        print(write(nums))
+        print( )
+        if coefficients[len(coefficients) - 1] != 0:
+          print("The remainder is " + str(checkFloat(coefficients[len(coefficients) - 1])))
+        coefficients.pop(len(coefficients) - 1)
+        print("Quotient:\n" + write(coefficients))
         break
       if coefficients[len(coefficients) - 1] == 0:
         coefficients.pop(len(coefficients) - 1)
