@@ -1,7 +1,9 @@
-#Solves quadratics
 import math
+import matplotlib.pyplot as plt
+import time
 
 def compString(string, answer):
+  
   string = list(string)
   answer = list(answer)
   mistakes = 0
@@ -14,15 +16,46 @@ def compString(string, answer):
   if mistakes > 3:
     return False
   return True
+  
+def removeDouble(function):
+  
+  function = list(function)
+  for i in range(len(function) - 1, -1, -1):
+    if i != len(function) - 1:
+      if (function[i] == "-" or function[i] == "+") and (function[i - 1] == "-" or function[i - 1] == "+"):
+        function.pop(i)
+        
+  result = ""
+  for character in function:
+    result += character
+  
+  works = False
+  
+  while not works:
+    works = True
+    exponents = []
+    for i in range(len(result)):
+      if result[i] == "^":
+        exponents.append(i)
+        
+    for i in exponents:
+      if i >= len(list(result)):
+        result = input("\n- Invalid exponent, enter again\n-")
+        works = False
+      elif list(result)[i + 1] not in validNums:
+        works = False
+        result = input("\n- Invalid exponent, enter again\n-")
+    
+  return result
 
 def simplify(string):
+  
     #remove non valid characters
     result = ""
     resultFinal = ""
     for i in string:
-      for j in valid:
-        if i == j:
-          result += i
+      if i in valid:
+        result += i
     exponent = False
     for i in result:
       if i == "^":
@@ -35,6 +68,7 @@ def simplify(string):
     return resultFinal
     
 def split(function):
+  
   sideA = ""
   sideB = ""
   equal = False
@@ -46,27 +80,50 @@ def split(function):
     elif equal:
       sideB += i
   return [sideA, sideB]
+  
+def reorder(nums, exps):
+  
+  for i in range(len(exps)):
+    for j in range(len(exps)):
+      if exps[j] < exps[i]:
+        num = nums[i]
+        exp = exps[i]
+        nums[i] = nums[j]
+        exps[i] = exps[j]
+        nums[j] = num
+        exps[j] = exp
+  return (nums, exps)
     
-def findExponents(string):
+def findExponents(string, target = "x", invalid = ""):
+  
+  if invalid == "":
+    invalid = ["i", target]
+  invalid.remove(target)
+  
   newString = ""
-  #Find all exponents of x in a polynomial
+  #Find all exponents of the target variable a polynomial
   start = True
   use = False
   x = False
   exponents = []
   exponent = ""
-  
   for character in string:
     if character != " ":
       newString += character
   string = newString
+
   for character in string:
     if start and (character == "-" or character == "+"):
       start = False
-    elif character == "x":
+    elif character == target:
       x = True
-    elif character == "^":
+    elif character == "^" and x:
       use = True
+    elif character in invalid and x:
+      if exponent == "":
+        exponent = "1"
+      use = False
+      x = False
     elif character == "+" or character == "-":
       if x and exponent == "":
         exponent = 1
@@ -76,86 +133,47 @@ def findExponents(string):
       exponent = ""
       x = False
       use = False
-    elif character in nums and use:
+    elif character in validNums and use:
       exponent += character
     start = False
+    
   if exponent == "" and x:
     exponents.append(1)
   elif exponent == "":
     exponents.append(0)
   else:
     exponents.append(int(exponent))
-  if string == " -2x^3 + 4x^2 - 8x":
-    print(exponents)
-  return exponents
   
-def addTerms(function):
-  if function == "":
-    return function
-  a = []
-  insert1 = False
-  for character in function:
-    if character == "x":
-      break
-    elif character in valid:
-      a += character
-  if a == []:
-    insert1 = True
-  result = ""
-  exponents = findExponents(function)
-  function = list(simplify(function))
-  if insert1:
-    function.insert(0, "1")
-  if function[0] != "-":
-    function.insert(0, "+")
-  for exponent in range(max(exponents), -1, -1):
-    #Add missing terms
-    if exponent not in exponents:
-      used = False
-      exponents.insert(exponents.index(exponent + 1) + 1, exponent)
-      # print(exponents.index(exponent + 1)  + 1, exponent)
-      place = max(exponents) + 1
-      for i in range(len(function)):
-        if function[i] == "+" or function[i] == "-":
-          place -= 1
-        if place == exponent:
-          function.insert(i, "0")
-          function.insert(i, "+")
-          used = True
-          break
-      if not used:
-        function.append("+")
-        function.append("0")
-  if function[0] == "+":
-    function.pop(0)
-  #Create and return new polynomial
-  start = True 
-  exponent = max(exponents)
-  for character in function:
-    if character == "-":
-      if start:
-        result += character
-      else:
-        if exponent > 0:
-          result += "x"
-        if exponent > 1:
-          result += "^" + str(exponent)
-        result += character
-        exponent -= 1
-    elif character == "+":
-      if exponent > 0:
-        result += "x"
-      if exponent > 1:
-        result += "^" + str(exponent)
-      result += character
-      exponent -= 1
-    else:
-      result += character
-    start = False
-  # print(result)
-  return result
+  return exponents
+
+def removeExponents(polynomial, expList):
+  
+  if "x" in expList:
+    expList.remove("x")
+  onX = False
+  polynomial = list(polynomial)
+  if polynomial[0] in variables:
+    polynomial.insert(0, "1")
+  indexes = []
+  for i in range(len(polynomial)):
+    if polynomial[i] in expList:
+      onX = True
+    elif polynomial[i] == "-" or polynomial[i] == "+" or (polynomial[i] == "x" and onX):
+      onX = False
+    if onX:
+      indexes.append(i)
+  for i in range(len(indexes) - 1, -1, -1):
+    polynomial.pop(indexes[i])
+  string = ""
+  for character in polynomial:
+    string += character
+  
+  if string == "":
+    string = "1"
+  return string
 
 def checkFloat(num):
+  
     if float(num) % 1 == 0:
         return int(num)
     elif str(num) == num:
@@ -163,7 +181,73 @@ def checkFloat(num):
     else:
         return float(num)
         
+def roundNum(num, place = 6):
+  
+  if num < 1:
+    negative = True
+  else:
+    negative = False
+  
+  if int(num) == float(num):
+    return int(num)
+  
+  num = list(str(num))
+  integer = ""
+  decimal = ""
+  afterDot = False
+  
+  for digit in num:
+    if digit == ".":
+      afterDot = True
+    elif not afterDot:
+      integer += digit
+    else:
+      decimal += digit
+      
+  integer = int(integer)
+      
+  if place < 1:
+    if int(decimal[0]) >= 5:
+      integer += 1
+      
+    return int(integer)
+  
+  decimal = list(reversed(decimal))
+  
+  while len(decimal) > place + 1:
+    decimal.pop(0)
+    
+  while len(decimal) < place + 1:
+    decimal.insert(0, 0)
+  
+  for i in range(len(decimal)):
+    decimal[i] = int(decimal[i])
+    
+  if decimal[0] >= 5:
+    decimal[0] = 10
+    for i in range(len(decimal)):
+      if decimal[i] == 10 and i != len(decimal) - 1:
+        decimal[i] = 0
+        decimal[i + 1] += 1
+      elif decimal[i] == 10:
+        decimal[i] = 0
+        integer += 1
+  else:
+    decimal.pop(0)
+    
+  decimal = list(reversed(decimal))
+  newDecimal = ""
+  for digit in decimal:
+    newDecimal += str(digit)
+    
+  newDecimal = float(f"0.{newDecimal}")
+  if negative:
+    newDecimal = -newDecimal
+    
+  return integer + newDecimal
+        
 def simplifyFraction(numerator, denominator):
+  
   negativeNumerator = False
   negativeDenominator = False
   if numerator < 0:
@@ -180,74 +264,253 @@ def simplifyFraction(numerator, denominator):
     numerator = -numerator
   if negativeDenominator:
     numerator = -numerator
-  return (str(checkFloat(numerator)) + "/" + str(checkFloat(denominator)))
+  return f"{str(checkFloat(numerator))}/{str(checkFloat(denominator))}"
 
 def abc(polynomial, findX = False):
+  
   if polynomial == "":
     return [0, 0, 0, 0]
+  
+  #If function is in standard form, then pass off to other function
   parentheses = 0
   for i in polynomial:
     if i =="(" or i == ")":
       parentheses += 1
   if parentheses == 2:
     return vertexToStandard(polynomial)
-  polynomial = addTerms(polynomial)
-  exponents = findExponents(polynomial)
-  polynomial = simplify(polynomial)
-  x = max(exponents)
-  coefficients = {}
-  nums = []
+  
+  function = removeExponents(polynomial, ["x", "i"])
+  exponents = findExponents(function)
+  function = list(simplify(function))
+  x = max(exponents)  
+  
+  if function[0] == "x":
+    function.insert(0, "1")
+  while " " in function:
+    function.remove(" ")
+  if function[0] == "+":
+    function.pop(0)
+
+  #Read function
+  result = []
+  term = ""
   start = True
-  #set up dictionary of values
-  for exponent in exponents:
-    coefficients.update({exponent : {"coefficient" : "", "negative" : False}})
-  exponent = len(coefficients) - 1
-  #find coefficients
-  for character in polynomial:
-    if character == "+":
-      exponent -= 1
+  for character in function:
+    if start and character == "-":
+      term += "-"
     elif character == "-":
-      if not start:
-        exponent -= 1
-      coefficients[exponent]["negative"] = True
+      if term == "":
+        term = "1"
+      result.append(term)
+      term = "-"
+    elif character == "+":
+      if term == "":
+        term = "1"
+      result.append(term)
+      term = ""
     else:
-      coefficients[exponent]["coefficient"] += character
+      term += character
     start = False
-  for exponent in coefficients:
-    if coefficients[exponent]["coefficient"] == "":
-      coefficients[exponent]["coefficient"] = 1
-    if coefficients[exponent]["negative"]:
-      coefficients[exponent]["coefficient"] = checkFloat(float(coefficients[exponent]["coefficient"]) * -1)
-    nums.append(checkFloat(float(coefficients[exponent]["coefficient"])))
+  if term == "":
+    term = "1"
+  result.append(term)
+    
+  for i in range(len(result)):
+    if result[i] == "-":
+      result[i] = "-1"
+    result[i] = checkFloat(float(result[i]))
+    
+  (function, exponents) = reorder(result, exponents)
+  
+  #Insert missing terms
+  for exponent in range(max(exponents) - 1, -1, -1):
+    if exponent not in exponents:
+      i = exponents.index(exponent + 1) + 1
+      exponents.insert(i, exponent)
+      function.insert(i, 0)
 
   if findX:
-    nums.append(x)
-  return nums
+    function.append(x)
+
+  return function
   
-def write(nums):
+def read(function):
+  
+  result = []
+  term = ""
+  start = True
+  for character in function:
+    if start and character == "-":
+      term += str(character)
+    elif character == "+" or character == "-":
+      term = abc(term)
+      while 0 in term and len(term) > 1:
+        term.remove(0)
+      for num in term:
+        result.append(num)
+      term = str(character)
+    else:
+      term += str(character)
+    start = False
+  term = abc(term)
+  while 0 in term and len(term) > 1:
+    term.remove(0)
+  for num in term:
+    result.append(num)
+  return result
+
+def write(coefficients, exponents = ""):
+  
+  #Format exponents correctly
+  if exponents == "":
+    exponents = []
+    for i in range(len(coefficients) - 1, -1, -1):
+      exponents.append(i)
+  if type(exponents) == list:
+    iexp = []
+    for i in exponents:
+      iexp.append(0)
+    exponents = {"x" : exponents, "i" : iexp}
+
   result = ""
   start = True
-  exponent = len(nums)
-  for coefficient in nums:
-    exponent -= 1
-    if not start:
-      if coefficient > 0:
-        result += " + "
-      elif coefficient < 0:
-        result += " - "
-    if start and coefficient == -1:
+  for i in range(len(coefficients)):
+    if start:
+      nonZero = False
+      for var in exponents:
+        if exponents[var][i] != 0:
+          nonZero = True
+    if (start and coefficients[i] != 1 and coefficients[i] != -1) or not nonZero:
+      result += str(checkFloat(coefficients[i]))
+    elif start and coefficients[0] == -1:
       result += "-"
-    if coefficient != 0 and (math.fabs(coefficient) != 1 or exponent == 0):
-      result += str(checkFloat(math.fabs(coefficient)))
-    if coefficient != 0 and exponent != 0:
-      result += "x"
-    if exponent > 1:
-      result += "^" + str(exponent)
+    elif coefficients[i] < 0:
+      result += " - "
+      
+      nonZero = False
+      for var in exponents:
+        if exponents[var][i] != 0:
+          nonZero = True
+          
+      if coefficients[i] != -1 or not nonZero:
+        result += str(checkFloat(-coefficients[i]))
+    elif coefficients[i] > 0 and not start:
+      result += f" + "
+      
+      nonZero = False
+      for var in exponents:
+        if exponents[var][i] != 0:
+          nonZero = True
+      
+      if coefficients[i] != 1 or not (nonZero):
+        result += str(checkFloat(coefficients[i]))
+    if coefficients[i] != 0:
+      
+      if exponents["i"][i] > 0:
+        result += "i"
+      for var in exponents:
+        if exponents[var][i] > 0 and var != "i":
+          result += var
+          if exponents[var][i] > 1:
+            result += f"^{str(checkFloat(exponents[var][i]))}"
     start = False
     
   return result
+
+def printDivision(functionBackup, divisorBackup, result, remainder):
+ 
+  #Backup origional inputs
+  divisionSign = ""
+  remainderDivision = ""
+  newFunction = ""
+  newDivisor = ""
+  newRemainder = ""
+  remDivisor = ""
+  divBackup = divisorBackup
+  functBackup = functionBackup
+  remBackup = remainder
+  remDivBackup = divisorBackup
+  
+  #Find the needed lenth for division signs
+  for i in range(max(len(list(functionBackup)), len(list(divisorBackup)))):
+    divisionSign += "-"
+  for i in range(max(len(list(remainder)), len(list(divisorBackup)))):
+    remainderDivision += "-"
+  
+  #Adjust spacing of the results
+  while len(list(functionBackup)) < len(list(divisorBackup)) and len(list(functionBackup)) < len(list(newDivisor)):
+    functionBackup = list(functionBackup)
+    functionBackup.insert(0, " ")
+    functionBackup.append(" ")
+    if len(functionBackup) > len(list(divisionSign)):
+      functionBackup.pop(0)
+  for character in functionBackup:
+    newFunction += character
+      
+  while len(list(divisorBackup)) < len(list(functionBackup)):
+    divisorBackup = list(divisorBackup)
+    divisorBackup.insert(0, " ")
+    divisorBackup.append(" ")
+    if len(divisorBackup) > len(list(divisionSign)):
+      divisorBackup.pop(0)
+  for character in divisorBackup:
+    newDivisor += character
+  
+  divisorBackup = divBackup
+  while len(list(divisorBackup)) < len(list(remainder)):
+    divisorBackup = list(divisorBackup)
+    divisorBackup.insert(0, " ")
+    divisorBackup.append(" ")
+    if len(divisorBackup) > len(list(divisionSign)):
+      divisorBackup.pop(0)
+  for character in divisorBackup:
+    remDivisor += character
     
-def roots(sideA, sideB, findExtra = True):
+  divisorBackup = divBackup
+  if remainder != "":
+    while len(list(remainder)) < len(list(remDivBackup)):
+      remainder = list(remainder)
+      remainder.insert(0, " ")
+      remainder.append(" ")
+      if len(remainder) > len(list(remainderDivision)):
+        remainder.pop(0)
+    for character in remainder:
+      newRemainder += character
+  
+  #Restablish what to print  
+  if len(list(functBackup))> len(list(newFunction)):
+    function = functionBackup
+  else:
+    function = newFunction
+  if len(list(divBackup)) > len(list(newDivisor)):
+    divisor = divBackup
+  else:
+    divisor = newDivisor
+  if len(list(remBackup)) > len(list(newRemainder)):
+    remainder = remBackup
+  else:
+    remainder = newRemainder
+  
+  #Combine everything into the three lines
+  if remainder != "":
+    for i in range(len(list(result))):
+      remainder = " " + remainder
+      remDivisor = " " + remDivisor
+    # function += "      " + remainder
+    # divisor += "      " + remDivisor
+    # divisionSign += " + " + remainderDivision
+  
+  print(f"\n\n{function}\n{divisionSign} =\n{divisor}")
+  if remainder != "":
+    remainder = "   " + remainder
+    result += " + "
+    remDivisor = "  " + remDivisor
+    print(f"\n|  {remainder}\n|  {result + remainderDivision}\n|   {remDivisor}")
+  else:
+    print(f"\n|  {result}")
+    
+def roots(sideA, sideB, findExtra = True, choice = False):
+  
     #Move everything to one side of the equation
     a = sideA[0] - sideB[0]
     b = sideA[1] - sideB[1]
@@ -255,6 +518,8 @@ def roots(sideA, sideB, findExtra = True):
     x = sideA[len(sideA) - 1] + sideB[len(sideB) - 1]
     if x == 6:
       x = 3
+    if x == 4:
+      x = 2
     root3 = 0
     #find the axis of symmetry
     AOS = checkFloat((b * -1) / (2 * a))
@@ -276,19 +541,46 @@ def roots(sideA, sideB, findExtra = True):
     
     #find the range
     if degree == "even" and a > 0:
-      yRange = "(" + str(checkFloat(a*(AOS ** 2) + (b * AOS) + c)) + ", +infinity)"
+      yRange = "(" + str(roundNum(checkFloat(a*(AOS ** 2) + (b * AOS) + c))) + ", +infinity)"
     elif degree == "even" and a < 0:
-      yRange = "(-infinity, " + str(checkFloat(a*(AOS ** 2) + (b * AOS) + c)) + ")"
+      yRange = "(-infinity, " + str(roundNum(checkFloat(a*(AOS ** 2) + (b * AOS) + c))) + ")"
     elif degree == "odd":
       yRange = "(-infinity, +infinity)"
     fractions = 0
     radicand = checkFloat((b ** 2) - 4 * a * c)
     if findExtra:
-      print("\nAxis of symmetry: x = " + str(AOS))
-      print("The domain is (-infinity, +infinity)")
-      print("The range is " + yRange)
-      print("End Behavior:\nas x --> -infinity, f(x) --> " + endBehavior[0] + "\nas x --> +infinity, f(x) --> " + endBehavior[1])
+      print(f"\n|Axis of symmetry: x = {str(roundNum(AOS))}")
+      print("|The domain is (-infinity, +infinity)")
+      print(f"|The range is {yRange}")
+      print(f"|End Behavior:\n|as x --> -infinity, f(x) --> {endBehavior[0]}\n|as x --> +infinity, f(x) --> {endBehavior[1]}\n")
     
+    #If finding Extra, plot the function
+    if findExtra:
+      xlist = []
+      ylist = []
+      xCoord = AOS - (31 * (0.5 / a)) / (x / 2)
+      for i in range(61):
+        xCoord += (0.5 / a) / (x / 2)
+        xlist.append(xCoord)
+        ylist.append((a * (xCoord ** x)) + (b * (xCoord ** (x - 1))) + (c * (xCoord ** (x - 2))))
+      
+      plt.clf()
+      plt.title('Function')
+      plt.xlabel('x')
+      plt.ylabel('f (x)')
+      #If there are real roots, plot them
+      plt.plot(xlist,ylist,'k.')
+      if radicand > 0:
+        xCoord = (-b + (radicand ** 0.5)) / (2 * a)
+        plt.plot(xCoord, (a * (xCoord ** x)) + (b * (xCoord ** (x - 1))) + (c * (xCoord ** (x - 2))), "c.")
+        xCoord = (-b - (radicand ** 0.5)) / (2 * a)
+        plt.plot(xCoord, (a * (xCoord ** x)) + (b * (xCoord ** (x - 1))) + (c * (xCoord ** (x - 2))), "c.")
+      if x == 3:
+        plt.plot(0, 0, "c.")
+      else:
+        h = -b / (2 * a)
+        plt.plot(h, (a * (h ** x)) + (b * (h ** (x - 1))) + (c * (h ** (x - 2))), "c.")
+      
     #if roots are imaginary
     if radicand < 0:
         radicand = radicand * -1
@@ -342,8 +634,8 @@ def roots(sideA, sideB, findExtra = True):
         root1 += "i"
         root2 += "i"
         if radicand != 1:
-            root1 += "(" + str(radicand) + ")^0.5"
-            root2 += "(" + str(radicand) + ")^0.5"
+            root1 += "(" + str(roundNum(radicand)) + ")^0.5"
+            root2 += "(" + str(roundNum(radicand)) + ")^0.5"
         if 2 * a != 1 and 2 * a != -1:
             if math.fabs(radicand) != 1 or b != 0:
               root1 += ")" 
@@ -357,30 +649,39 @@ def roots(sideA, sideB, findExtra = True):
               if math.fabs(radicand) != 1 or b != 0:
                 root2 += ")"
               root2 += " / " + str(checkFloat(2 * a))
-        print("\nThe first root is " + str(root1))
-        print("The second root is " + str(root2))
+        print(f"\n|  The first root is {str(root1)}")
+        print(f"|  The second root is {str(root2)}")
         if x == 3:
-          print("The third root is 0")
+          print("|  The third root is 0")
     else:
        
         #if numbers are real, calculate
-        root1 = (-b + (radicand ** 0.5)) / (2 * a)
-        root2 = (-b - (radicand ** 0.5)) / (2 * a)
+        root1 = roundNum((-b + (radicand ** 0.5)) / (2 * a))
+        root2 = roundNum((-b - (radicand ** 0.5)) / (2 * a))
 
         if root1 % 1 != 0 and 2 * a != 1 and 2 * a != -1:
             fractions += 1
         if root2 % 1 != 0 and 2 * a != 1 and 2 * a != -1:
             fractions += 2
         if fractions == 1 and 2 * a != 1:
-            choice = input("One root has a decimal, would you like it \nas a fraction?(yes/no): ")
+            if  not choice:
+              choice = "no"
+            else:
+              choice = input("- One root has a decimal, would you like it \nas a fraction?(yes/no):\n-")
             if choice.lower() == "yes":
                 root1 = simplifyFraction((-b + (radicand ** 0.5)), (2 * a))
         elif fractions == 2:
-            choice = input("One root has a decimal, would you like it \nas a fraction?(yes/no): ")
+            if not choice:
+              choice = "no"
+            else:
+              choice = input("- One root has a decimal, would you like it \nas a fraction?(yes/no):\n-")
             if choice.lower() == "yes":
                 root2 = simplifyFraction((-b - (radicand ** 0.5)), (2 * a))  
         elif fractions == 3:
-            choice = input("Both roots have decimals, would you like them \nas fractions?(yes/no): ")
+            if not choice:
+              choice = "no"
+            else:
+              choice = input("- Both roots have decimals, would you like them \nas fractions?(yes/no):\n-")
             if choice.lower() == "yes":
                 root1 = simplifyFraction((-b + (radicand ** 0.5)), (2 * a))
                 root2 = simplifyFraction((-b - (radicand ** 0.5)), (2 * a))  
@@ -400,37 +701,42 @@ def roots(sideA, sideB, findExtra = True):
               roots[j][1] = root
               
         #Print roots, excluding duplicates
-        print("The first root is ", end="")
+        print("\n|  The first root is ", end="")
         if type(roots[0][1]) != str:
           print(str(checkFloat(roots[0][1])))
         else:
           print(roots[0][1])
         if roots[0][0] != roots[1][0]:
-          print("The second root is ", end ="")
+          print("|  The second root is ", end ="")
           if type(roots[1][1]) != str:
             print(str(checkFloat(roots[1][1])))
           else:
             print(roots[1][1])
           if x == 3:
             if roots[2][0] != roots[0][0] and roots[2][0] != roots[1][0]:
-              print("The third root is ", end = "")
+              print("|  The third root is ", end = "")
               if type(roots[2][1]) != str:
                 print(str(checkFloat(roots[2][1])))
               else:
                 print(roots[2][1])
         elif x == 3:
           if roots[0][0] != roots[2][0]:
-            print("The second root is ", end="")
+            print("|  The second root is ", end="")
             if type(roots[2][1]) != str:
               print(str(checkFloat(roots[2][1])))
             else:
               print(roots[2][1])
           else:
-            print("There is only one root")
+            print("\nThere is only one root")
         else:
-          print("There is only one root")
+          print("\nThere is only one root")
+          
+    if findExtra:
+      plt.show()
+      time.sleep(1)
           
 def vertexToStandard(equation):
+  
     equation = simplify(equation)
     negativeA = False
     negativeH = False
@@ -478,496 +784,820 @@ def vertexToStandard(equation):
     c =((h ** 2) * a) + k
     return [a, b, c, 2]
     
-def solveQuadratic(function, findExtra = True):
-  function = split(function)
+def solveQuadratic(function, findExtra = True, choice = False):
+  
+  function = split(removeDouble(function))
   sideA = function[0]
   sideB = function[1]
-  roots(abc(sideA, True), abc(sideB, True), findExtra)
+  exponentsA = findExponents(sideA)
+  exponentsB = findExponents(sideB)
+  exponentsA.append(max(exponentsB))
+  nums = abc(sideA)
+  while 0 in nums:
+    nums.remove(0)
     
-def printVertexForm(equation, stop = True):
-  equation = split(equation)
-  sideA = abc(equation[0])
-  sideB = abc(equation[1])
-  a = checkFloat(sideA[0] - sideB[0])
-  b = checkFloat(sideA[1] - sideB[1])
-  c = checkFloat(sideA[2] - sideB[2])
-  h = checkFloat((b * -1) / (2 * a))
-  k = checkFloat((a * (h ** 2)) + (b * h) + c)
-  h = h * -1
-  vertexForm = "y = " + str(a) + "(x "
-  if h < 0:
-    vertexForm += "- " + str(checkFloat(h * -1))
-  elif h > 0:
-    vertexForm += "+ " + str(h)
-  vertexForm += ")^2 "
-  if k < 0:
-    vertexForm += "- " + str(checkFloat(k * -1))
-  elif k > 0:
-    vertexForm += "+ " + str(k)
-  print("\nThe vertex form is:\n" + vertexForm)
+  minExp = 0
+  for i in range(len(exponentsA) - 1, -1, -1):
+    if sideA[i] != 0:
+      minExp = exponentsA[i]
   
-  # if checking answers
-  if not stop:
-    vertexForm = str(a) + "(x "
-    if h < 0:
-      vertexForm += "- " + str(h * -1)
-    else:
-      vertexForm += "+ " + str(h)
-    vertexForm += ")^2 "
-    if k < 0:
-      vertexForm += "- " + str(k * -1)
-    else:
-      vertexForm += "+ " + str(k)
-    return vertexForm
-  
-def printStandardForm(equation, stop = True):
-  equation = split(equation)
-  sideA = abc(equation[0])
-  sideB = abc(equation[1])
-  for i in range(len(sideA)):
-    if i > len(sideB) - 1:
-      break
-    sideA[i] -= sideB[i]
+  while (max(exponentsA) < 2 and "(" not in list(sideA)) or (len(nums) > 3 and "(" not in list(sideA)) or  (minExp + (2 - max(exponentsA)) < 0) or (minExp < 1 and exponentsA[0] == 3):
     
-  sideA.pop(len(sideA) - 1)
-  #If checking answers
-  if not stop:
-    return write(sideA)
-    
-  print("\nThe standard form is:\n" + write(sideA))
-    
-def groupFactor(function):
-  print()
-  function = split(function)
-  exponents = findExponents(function[0])
-  sideA = abc(function[0])
-  sideB = abc(function[1])
-  for i in range(len(sideB)):
-    sideA[i] -= sideB[i]
-  function = sideA
-  for num in function:
-    if num % 1 != 0:
-      return "Can't be factored"
+    # If the degree is too low
+    while max(exponentsA) < 2 and "(" not in list(sideA):
+      function = split(removeDouble(input("\n- The degree is too low, enter a higher degree polynomial\n-")))
+      sideA = function[0]
+      sideB = function[1]
+      exponentsA = findExponents(sideA)
+      exponentsB = findExponents(sideB)
+      exponentsA.append(max(exponentsB))
       
-  #Factor out X's if possible
-  factor3 = 0
-  if min(exponents) > 0:
-    factor3 = min(exponents)
-    for i in range(len(exponents)):
-      exponents[i] -= factor3
-    print("(x^" + str(factor3) + ")",end="")
+    #If there is a constant term
+    while minExp < 1 and exponentsA[0] > 2:
+      function = split(removeDouble(input("\n- A polynomial with a degree above 2 can't have a constant, enter again\n-")))
+      sideA = function[0]
+      sideB = function[1]
+      exponentsA = findExponents(sideA)
+      nums = abc(sideA)
+      while 0 in nums:
+        nums.remove(0)
+      minExp = 0
+      for i in range(len(exponentsA) - 1, -1, -1):
+        if sideA[i] != 0:
+          minExp = exponentsA[i]
+      
   
-  #Find GCFs
-  for GCF1 in range(int(max([math.fabs(function[0]), math.fabs(function[1])])), 0, -1):
-    if function[0] % GCF1 == 0 and function[1] % GCF1 == 0:
-      break
-  for GCF2 in range(int(max([math.fabs(function[2]), math.fabs(function[3])])), 0, -1):
-    if function[2] % GCF2 == 0 and function[3] % GCF2 == 0:
-      break
-  if function[0] == function[1] or function[0] == -function[1]:
-    GCF1 = function[0]
-  if function[2] == function[3] or function[2] == -function[3]:
-    GCF2 = function[2]
-    
-  #Divide all terms by GCFs
-  factor1Term1 = checkFloat(function[0] / GCF1)
-  factor1Term2 = checkFloat(function[1] / GCF1)
-  factor1Term1v2 = function[2] / GCF2
-  factor1Term2v2 = function[3] / GCF2
-  
-  #If the second GCF needs to be made, negative, do so
-  if factor1Term1 != factor1Term1v2:
-    if factor1Term1 == -factor1Term1v2:
-      GCF2 = -GCF2
-    else:
-      print("Not factorable")
-      return
-  factor2Term1 = GCF1
-  factor2Term2 = GCF2
-  
-  #Find the lowest exponents of the Xs and divide by them
-  factor2x1 = int(min([exponents[0], exponents[1]]))
-  factor2x2 = int(min(exponents[2], exponents[3]))
-  if factor2x1 > 0:
-    factor1x1 = exponents[0] - factor2x1
-    factor1x2 = exponents[1] - factor2x1
-  else:
-    factor1x1 = exponents[0]
-    factor1x2 = exponents[1]
-  
-  #Create First Factor
-  if factor1x1 > 1:
-    factor1 = str(factor1Term1) + "x^" + str(factor1x1)
-  elif factor1x1 == 1:
-    factor1 = str(factor1Term1) + "x"
-  else:
-    factor1 = str(factor2Term1)
-    
-  if factor1Term2 < 0:
-    factor1 += " - "
-    factor1Term2 = -factor1Term2
-  else:
-    factor1 += " + "
-    
-  if factor1x2 > 1:
-    factor1 += str(factor1Term2) + "x^" + str(factor1x2)
-  elif factor1x2 == 1:
-    factor1 += str(factor1Term2) + "x"
-  else:
-    factor1 += str(factor1Term2)
-    
-  factor1 = write(abc(factor1))
-    
-  #Create Second factor
-  if factor2x1 > 1:
-    factor2 = str(factor2Term1) + "x^" + str(factor2x1)
-  elif factor2x1 == 1:
-    factor2 = str(factor2Term1) + "x"
-  else:
-    factor2 = str(factor2Term1)
-    
-  if factor2Term2 < 0:
-    factor2 += " - "
-    factor2Term2 = -factor2Term2
-  else:
-    factor2 += " + "
-    
-  if factor2x2 > 1:
-    factor2 += str(factor2Term2) + "x^" + str(factor2x2)
-  elif factor2x2 == 1:
-    factor2 += str(factor2Term2) + "x"
-  else:
-    factor2 += str(factor2Term2)
-  
-  factor2 = write(abc(factor2))
-
-  print("(" + factor1 + ")(" + factor2 + ")\n")
-  
-  #Find if the factors can be factored further, solved, or can't be solved with this program
-  if max(findExponents(factor1)) == 2:
-    print("\n" + factor1)
-    solveQuadratic(factor1, False)
-  elif max(findExponents(factor1)) == 1:
-    print(factor1 + "\nthe root is " + str(checkFloat(abc(factor1)[1] / abc(factor1)[0])))
-  if max(findExponents(factor2)) == 2:
-    print("\n" + factor2)
-    solveQuadratic(factor2, False)
-  elif max(findExponents(factor2)) == 1:
-    print(factor2 + "\nthe root is " + str(checkFloat(abc(factor2)[1] / abc(factor2)[0])))
-  if factor3 != 0:
-    print("\nThe last root is 0",end = "")
-    if factor3 > 1:
-      print(" mult. " + str(factor3))
-    else:
-      print()
-  print()
-  
-def syntheticDivision(function, stop = False):
-  print(stop)
-  function = split(function)
-  exponents = findExponents(function[0])
-  sideA = abc(function[0])
-  sideB = abc(function[1])
-  for i in range(len(sideB)):
-    sideA[i] -= sideB[i]
-  nums = sideA
-  factors = []
-  while len(nums) > 3:
-    factorable = False
-    p = []
-    q = []
-    possible = []
-    LC = nums[0]
-    constant = nums[len(nums) - 1]
-    #Find p and q, then find possible zeros
-    for constantFactor in range(1, int(math.fabs(constant) + 1)):
-      if constant % constantFactor == 0:
-        p.append(constantFactor)
-        p.append(-constantFactor)
-    for lcFactor in range(1, int(math.fabs(LC) + 1)):
-      if LC % lcFactor == 0:
-        q.append(lcFactor)
-        q.append(-lcFactor)
-    
-    if stop:
-      q = [1]
-      p = [-abc((input("\nEnter the divisor\nx - a\n")))[1]]
-    for pFactor in p:
-      for qFactor in q:
-        if pFactor / qFactor not in possible:
-          possible.append(pFactor / qFactor)
-    
-    for factor in possible:
-      coefficients = [nums[0]]
-      for i in range(len(nums) - 1):
-        coefficients.append((coefficients[i] * factor) + nums[i + 1])
-      #If the remainder is zero, record factor and start over with new polynomial
-      if stop:
-        print( )
-        if coefficients[len(coefficients) - 1] != 0:
-          print("The remainder is " + str(checkFloat(coefficients[len(coefficients) - 1])))
-        coefficients.pop(len(coefficients) - 1)
-        print("Quotient:\n" + write(coefficients))
-        break
-      if coefficients[len(coefficients) - 1] == 0:
-        coefficients.pop(len(coefficients) - 1)
-        factors.append(factor)
-        nums = coefficients
-        factorable = True
-        break
-    if stop:
-      break
-    if not factorable:
-      for factor in factors:
-        print("(x",end ="")
-        if factor < 1:
-          print(" + " + str(checkFloat(-factor)) + ")",end="")
-        else:
-          print(" - " + str(checkFloat(factor)) + ")",end="")
-      exponent = len(nums) - 1
-      polynomial = ""
-      start = True
-      for coefficient in nums:
-        if start:
-          polynomial += str(checkFloat(coefficient))
-        elif coefficient != 0:
-          if coefficient < 1:
-            polynomial += " - " + str(checkFloat(-coefficient))
-          elif coefficient > 1:
-            polynomial += " + " + str(checkFloat(coefficient))
-        if exponent == 1 and coefficient != 0:
-          polynomial += "x"
-        elif exponent != 0 and coefficient != 0:
-          polynomial += "x^" + str(exponent)
-        exponent -= 1
-        start = False
-      print("(" + polynomial + ")")
-      print("The polynomial can't be factored further")
-      stop = True
-      break
-  if stop:
-    return
-  print("\nThe first ",end="")
-  if len(factors) > 1:
-    print(str(len(factors)) + " factors are:")
-    for factor in factors:
-      print("(x",end ="")
-      if factor < 1:
-        print(" + " + str(checkFloat(-factor)) + "), ",end="")
-      else:
-        print(" - " + str(checkFloat(factor)) + "), ",end="")
-      print("x = " + str(checkFloat(factor)))
-  else:
-    print("factor is:\nx = " + str(checkFloat(factors[0])))
-  quadratic = str(checkFloat(nums[0])) + "x^2"
-  if nums[1] < 0:
-    quadratic += " - " + str(checkFloat(-nums[1])) + "x"
-  else:
-    quadratic += " + " + str(checkFloat(nums[1])) + "x"
-  if nums[2] < 0:
-    quadratic += " - " + str(checkFloat(-nums[1]))
-  else:
-    quadratic += " + " + str(checkFloat(nums[1]))
-  print("\nThe remaining quadratic is:\n" + quadratic)
-  roots([nums[0], nums[1], nums[2], 2], [0, 0, 0, 0], False)
-  
-def longDivision(function, divisor):
-  #Process function
-  functionBackup = function
-  divisorBackup = divisor
-  function = split(function)
-  exponents = findExponents(function[0])
-  sideA = abc(function[0])
-  sideB = abc(function[1])
-  for i in range(min(len(sideA), len(sideB))):
-    sideA[i] -= sideB[i]
-  nums = sideA
-  divisorExp = findExponents(divisor)
-  divisor = abc(divisor)
-  place = 0
-  result = []
-  remainder = ""
-  
-  #Loop until division is completed
-  while max(exponents) >= divisorExp[0]:
-    coefficient = nums[0] / divisor[0]
-    for num in divisor:
-      nums[place] -= coefficient * num
-      place += 1
-    emptyTerms = 0
-    
-    #If there is more division to do and there are empty terms at the beginning, remove them
-    if len(nums) > 0:
-      while True:
-        if nums[0] == 0:
-          nums.pop(0)
-        else:
-          break
-        if len(nums) < 1:
-          break
+    # If the polynomial has too many terms
+    while len(nums) > 3 and "(" not in list(sideA):
+      function = split(removeDouble(input("\n- Your polynomial has too many terms, enter again\n-")))
+      sideA = function[0]
+      sideB = function[1]
+      exponentsA = findExponents(sideA)
+      nums = abc(sideA)
+      while 0 in nums:
+        nums.remove(0)
         
-    #Find out how many terms there still are
-    exponents = []
-    for i in range(len(nums) - 1, -1, -1):
-      exponents.append(i)
-    result.append(coefficient)
-    place = 0
-    if nums == []:
-      break
+    #If the exponents don't decend correctly
+    while minExp + (2 - max(exponentsA)) < 0:
+      function = split(removeDouble(input("\n- Invalid exponents, enter again\n-")))
+      sideA = function[0]
+      sideB = function[1]
+      exponentsA = findExponents(sideA)
+      nums = abc(sideA)
+      while 0 in nums:
+        nums.remove(0)
+      minExp = 0
+      for i in range(len(exponentsA) - 1, -1, -1):
+        if sideA[i] != 0:
+          minExp = exponentsA[i]
   
-  #If there is a remainder, process it into a polynomial
-  if len(nums) > 0:
-    remainder = write(nums)
-  
-  #Process the quotient into a polynomial
-  result = write(result)
-  
-  #Backup origional inputs
-  divisionSign = ""
-  remainderDivision = ""
-  newFunction = ""
-  newDivisor = ""
-  newRemainder = ""
-  remDivisor = " "
-  divBackup = divisorBackup
-  functBackup = functionBackup
-  remBackup = remainder
-  remDivBackup = divisorBackup
-  
-  #Find the needed lenth for division signs
-  for i in range(max(len(list(functionBackup)), len(list(divisorBackup)))):
-    divisionSign += "-"
-  for i in range(max(len(list(remainder)), len(list(divisorBackup)))):
-    remainderDivision += "-"
-  
-  #Adjust spacing of the results
-  while len(list(functionBackup)) < len(list(divisorBackup)) - 1 and len(list(funtionBackup)) < len(list(newDivisor)) - 1:
-    functionBackup = list(functionBackup)
-    functionBackup.insert(0, " ")
-    functionBackup.append(" ")
-    if len(functionBackup) > len(list(divisionSign)):
-      functionBackup.pop(0)
-  for character in functionBackup:
-    newFunction += character
+  #If the degree is too high, but the exponents can have x's factored out to get 2, 1, 0, then use
+  if max(exponentsA) > 3:
+    x = 2 - max(exponentsA)
+    for i in range(len(exponentsA)):
+      exponentsA[i] += x
+    print()
+    roots(abc(sideA, True), abc(sideB, True), False, choice)
+    if -x > 1:
+      print(f"|  The last root is x mult. {-x}")
+    else:
+      print("|  The last root is x")
       
-  while len(list(divisorBackup)) < len(list(functionBackup)) - 1:
-    divisorBackup = list(divisorBackup)
-    divisorBackup.insert(0, " ")
-    divisorBackup.append(" ")
-    if len(divisorBackup) > len(list(divisionSign)):
-      divisorBackup.pop(0)
-  for character in divisorBackup:
-    newDivisor += character
-  
-  divisorBackup = divBackup
-  while len(list(divisorBackup)) < len(list(remainder)) - 1:
-    divisorBackup = list(divisorBackup)
-    divisorBackup.insert(0, " ")
-    divisorBackup.append(" ")
-    if len(divisorBackup) > len(list(divisionSign)):
-      divisorBackup.pop(0)
-  for character in divisorBackup:
-    remDivisor += character  
-  
-  divisorBackup = divBackup
-  if remainder != "":
-    while len(list(remainder)) < len(list(remDivBackup)):
-      remainder = list(remainder)
-      remainder.insert(0, " ")
-      remainder.append(" ")
-      if len(remainder) > len(list(remainderDivision)):
-        remainder.pop(0)
-    for character in remainder:
-      newRemainder += character
-  
-  #Restablish what to print  
-  if len(list(functBackup))> len(list(newFunction)):
-    function = functionBackup
   else:
-    function = newFunction
-  if len(list(divBackup)) > len(list(newDivisor)):
-    divisor = divBackup
-  else:
-    divisor = newDivisor
-  if len(list(remBackup)) > len(list(newRemainder)):
-    remainder = remBackup
-  else:
-    remainder = newRemainder
+    roots(abc(sideA, True), abc(sideB, True), findExtra, choice)
   
-  #Combine everything into the three lines
-  divisionSign += " = " + result
-  if remainder != "":
-    for i in range(len(list(result))):
-      function += " "
-      divisor += " "
-    function += "      " + remainder
-    divisor += "      " + remDivisor
-    divisionSign += " + " + remainderDivision
+def multiplyPol(factors, returnProduct = False):
   
-  print()
-  print("Result:\n")
-  print(function)
-  print(divisionSign)
-  print(divisor)
+  expression = ""
+  newFactors = []
+  for i in range(len(factors)):
+    #Rewrite factors if prefered form and print
+    factor = removeDouble(factors[i])
+    
+    #Find exponents and coefficients
+    exp = {}
+    for character in factor:
+      if character in variables and character not in exp:
+        exp.update({character : 0})
 
+    for variable in list(exp.keys()):
+      exp.update({variable : findExponents(factor, variable, list(exp.keys()))})
+    
+    factor = read(removeExponents(factor, list(exp.keys())))
+    
+    #Make sure i and x are included
+    if "i" not in exp:
+      iexp = []
+      for i in range(len(factor)):
+        iexp.append(0)
+      exp.update({"i" : iexp})
+      
+    if "x" not in exp:
+      xexp = []
+      for i in range(len(factor)):
+        xexp.append(0)
+      exp.update({"x" : xexp})
+    
+    expression += f"( {write(factor, exp)} )"
+    newFactors.append({"coeff" : factor, "variables" : exp})
+  
+  if not returnProduct:
+    print(f"\nFactors:\n{expression}")
+  
+  factors = newFactors
+  while len(factors) > 1:
+    exp1 = factors[0]["variables"]
+    exp2 = factors[1]["variables"]
+    
+    #Update the exponents for both factors to include any variables that were in one factor but not the other
+    for variable in exp1:
+      if variable not in exp2:
+        exp2.update({variable : 0})
+        exp2.update({variable : findExponents(factors[1], variable, list(exp2.keys()))})
+    for variable in exp2:
+      if variable not in exp1:
+        exp1.update({variable : 0})
+        exp1.update({variable : findExponents(factors[0], variable, list(exp1.keys()))})
+    
+    pol1 = factors[0]["coeff"]
+    pol2 = factors[1]["coeff"]
+    
+    #If I or X was not in either factor, include the exponents of zero
+    if "i" not in exp1:
+      iexp = []
+      for i in range(len(pol1)):
+        iexp.append(0)
+      exp1.update({"i" : iexp})
+    
+    if "x" not in exp1:
+      xexp = []
+      for i in range(len(pol1)):
+        xexp.append(0)
+      exp1.update({"x" : xexp})
+      
+    if "i" not in exp2:
+      iexp = []
+      for i in range(len(pol2)):
+        iexp.append(0)
+      exp2.update({"i" : iexp})
+    
+    if "x" not in exp2:
+      xexp = []
+      for i in range(len(pol2)):
+        xexp.append(0)
+      exp2.update({"x" : xexp})      
+    
+    product = []
+    productExp = {}
+    for var in list(exp1.keys()):
+      productExp.update({var : []})
+
+    #Perform multiplication
+    for i in range(len(pol1)):
+      for j in range(len(pol2)):
+        product.append(pol1[i] * pol2[j])
+        for var in list(exp1.keys()):
+          productExp[var].append(exp1[var][i] + exp2[var][j])
+    
+    #Simplify exponents of i
+    for i in range(len(productExp["i"])):
+      while productExp["i"][i] > 3:
+        productExp["i"][i] -= 4
+      if productExp["i"][i] == 2:
+        product[i] = -product[i]
+        productExp["i"][i] = 0
+      elif productExp["i"][i] == 3:
+        product[i] = -product[i]
+        productExp["i"][i] = 1
+
+    #Combine like terms
+    for i in range(len(product)):
+      for j in range(len(product)):
+        combine = True
+        for var in list(productExp.keys()):
+          if productExp[var][i] != productExp[var][j] or i == j:
+            combine = False
+          
+        if combine:
+          product[i] += product[j]
+          product[j] = 0
+    
+    #Get rid of all zero terms, unless there are only zero terms, then leave one
+    while 0 in product and len(product) > 1:
+      for var in productExp.keys():
+        productExp[var].pop(product.index(0))
+      product.remove(0)
+    
+    #Update the factors to include the new product
+    factors.append({"coeff" : product, "variables" : productExp})
+    factors.pop(0)
+    factors.pop(0)
+  
+  #Take product and process
+  coefficients = factors[0]["coeff"]
+  exponents = factors[0]["variables"]
+
+  # #Reorder terms by their degree of the highest exponent in the expression
+  maxVar = "i"
+  degree = 0
+
+  for var in list(exponents.keys()):
+    if exponents[var][0] > degree:
+      maxVar = var
+      degree = exponents[var][0]
+      
+  for i in range(len(coefficients)):
+    for j in range(len(coefficients)):
+      
+      if exponents[maxVar][i] > exponents[maxVar][j]:
+        coeffTemp = coefficients[i]
+        coefficients[i] = coefficients[j]
+        coefficients[j] = coeffTemp
+        
+        for var in exponents:
+          expTemp = exponents[var][i]
+          exponents[var][i] = exponents[var][j]
+          exponents[var][j] = expTemp
+  
+  #Reorder to put terms with an exponent of i first, while maintaining previous standard form
+  for i in range(len(coefficients)):
+    for j in range(len(coefficients)):
+      swap = True
+      
+      for var in list(exponents.keys()):
+        if exponents[var][i] != exponents[var][j] and var != "i":
+          swap = False
+      if swap and exponents["i"][i] > exponents["i"][j]:
+        coeffTemp = coefficients[i]
+        coefficients[i] = coefficients[j]
+        coefficients[j] = coeffTemp
+        
+        for var in exponents:
+          expTemp = exponents[var][i]
+          exponents[var][i] = exponents[var][j]
+          exponents[var][j] = expTemp
+
+  result = write(coefficients, exponents)
+  
+  if not returnProduct:
+    print(f"\nThe product is:\n|  {result}")
+    
+  else:
+    return result
+  
+  
 #Main
 decimals = [0.5, 0.25, 0.2, 0.125, 0.1, 0.0625, 0.05, 0.04, 0.01]
-nums = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+validNums = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 valid = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", ".", "^"]
-  
-choice = input("****Temporary****\nDo you want to \n(1) CHECK CONVERSIONS\n(2) CHECK IMAGINARY FUNCTIONS\n(3) USE PROGRAM\n")
-print()
-print("__________________________________________________________________\n")
-if compString(choice.upper(), "CHECK IMAGINARY FUNCTIONS") or choice == "2":
-  functions = ["3x^2 + 4x + 5","-2x^2 - 3x - 6","0.25x^2 + 3x + 12","0.2x^2 - 4x + 25","4(x - 2)^2 + 6","-2(x - 4)^2 - 8","0.25(x - 0.5)^2 + 1","-0.2(x + 5)^2 - 10","1x^2 - 3x + 8 = -3x^2 + 2x + 5","-0.5x^2 - 6x + 2 = 1.5x^2 - 4x + 8","6x^2 - 3x - 3 = 7x^2 + 1x + 6","-0.75x^2 + 6x - 1 = -0.25x^2 + 8x + 7","-3(x - 1)^2 + 10 = 2(x + 4)^2 - 10","-0.5(x + 4)^2 + 3 = 2.5(x + 3)^2 + 8","-2(x + 2)^2 + 3 = -1(x + 3)^2 + 15","-8(x - 2)^2 - 4 = 3(x + 5)^2 + 6","-1(x - 5)^2 - 3 = 7x^2 + 6x + 5","6(x - 1)^2 + 3 = -5x^2 - 4x + 6","0.5(x - 2)^2 + 4 = -1.5x^2 - 6x + 2","6x^2 + 2x - 4 = -4(x - 2)^2 + 2","4x^3 - 6x^2 + 3x","-0.5x^3 - 8x^2 - 40x","8x^3 + 2x^2 + 3x","-3x^3 + 5x^2 - 4x = 2x^3 + 3x^2 - 2x","5x^3 - 6x^2 + 4x = 2x^3 - 4x^2 - 2x","4x^3 + 7x^2 - 6x = -2x^3 + 4x^2 - 8x"]
-  for function in functions:
-    print(function)
-    solveQuadratic(function)
-    print("**************************")
-elif compString(choice.upper(), "CHECK CONVERSIONS") or choice == "1":
-  functions = ["2x^2 + 16x + 24","-4x^2 + 6x + 9","0.0625x^2 - 0.2x - 4","-0.4x^2 + 5x + 3","-0.5(x - 3)^2 + 2", "2(x - 4)^2 - 8","0.125(x - 2)^2 - 4","-3(x + 6)^2 + 12","-0.125x^2 + 3x -.2 = 0.5x^2 + 5x - 1","5x^2 - 7x + 3 = -3x^2 + 4x + 1","-0.2x^2 - 7x + 1.5 = 1.3x^2 - 6x - 0.5","-8x^2 + 5x - 2 = 4x^2 + 7x - 8","0.2(x - 5)^2 - 8 = 0.0625(x + 0.5)^2 - 1","3(x - 8)^2 - 1 = -4(x - 9)^2 + 5","-9(x + 5)^2 - 2 = -6(x + 4)^2 + 12","-0.1(x - 8)^2 + 7 = 0.0625(x - 3)^2 + 4","3x^2 + 4x + 5","-2x^2 - 3x - 6","0.25x^2 + 3x + 12","0.2x^2 - 4x + 25","4(x - 2)^2 + 6","-2(x - 4)^2 - 8","0.25(x - 0.5)^2 + 1","-0.2(x + 5)^2 - 10","1x^2 - 3x + 8 = -3x^2 + 2x + 5","-0.5x^2 - 6x + 2 = 1.5x^2 - 4x + 8","6x^2 - 3x - 3 = 7x^2 + 1x + 6","-0.75x^2 + 6x - 1 = -0.25x^2 + 8x + 7","-3(x - 1)^2 + 10 = 2(x + 4)^2 - 10","-0.5(x + 4)^2 + 3 = 2.5(x + 3)^2 + 8","-2(x + 2)^2 + 3 = -1(x + 3)^2 + 15","-8(x - 2)^2 - 4 = 3(x + 5)^2 + 6",]
-  for function in functions:
-    print(function)
-    solveQuadratic(function)
-    vertex = False
-    for character in function:
-      if character == "(":
-        vertex = True
-        break
-    if vertex:
-      function = printStandardForm(function, False)
-    else:
-      function = printVertexForm(function, False)
-    solveQuadratic(function)
-    print("*************************************")
-  exit()
+variables = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"
+             "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+
 while True:
-  program = input("*****Functions*****\n(1) Solve Quadratic\n(2) Convert From Standard to Vertex Form\n(3) Convert From Vertex to Standard Form\n(4) Factor by Grouping\n(5) Divide Synthetically\n(6) Do long division\n\nWhat do you want to do?\n")
+  
+  program = input("Functions\n\n(1) Solve Quadratic\n(2) Convert From Standard to Vertex Form\n(3) Convert From Vertex to Standard Form\n(4) Factor by Grouping\n(5) Divide Synthetically\n(6) Perform Long Division\n(7) Multiply Polynomials\n(8) Make Composite Function\n\n- What do you want to do?\n-")
   print("__________________________________________________________________\n")
+  
+  
   if compString(program.lower(), "solve quadratic") or program == "1":
-    solveQuadratic(input("\nax^2 + bx + c\nax^2 + bx + c = ax^2 + bx + c\na(x - h)^2 + k\na(x - h)^2 + k = a(x - h)^2 + k\nax^2 + bx + c = a(x - h)^2 + k\nax^3 + bx^2 + cx\nax^3 + bx^2 + cx = ax^3 + bx^2 + cx\nEnter a quadratic\n\n"))
+    
+    solveQuadratic(input("\nax^2 + bx + c\nax^2 + bx + c = ax^2 + bx + c\na(x - h)^2 + k\na(x - h)^2 + k = a(x - h)^2 + k\nax^2 + bx + c = a(x - h)^2 + k\nax^3 + bx^2 + cx\nax^3 + bx^2 + cx = ax^3 + bx^2 + cx\n- Enter a quadratic\n\n-"), True, True)
     print("__________________________________________________________________")
+    
+ 
   elif compString(program.lower(), "convert from standard to vertex form") or program == "2":
-    printVertexForm(input("\nax^2 + bx + c = dx^2 + ex + f\nax^2 + bx + c\nEnter a quadratic in standard form\n"))
+    
+    equation = input("\nax^2 + bx + c = dx^2 + ex + f\nax^2 + bx + c\n\n- Enter a quadratic\n-")
+  
+    equation = split(removeDouble(equation))
+  
+    #If the degree is too high
+    while(max(findExponents(equation[0]))) > 2 or max(findExponents(equation[1])) > 2 and equatin[1] != "":
+      equation = split(removeDouble(input("\n- The degree of the polynomial is too high, enter another\n-")))
+    #If the degree is too low
+    while(max(findExponents(equation[0]))) < 2 or max(findExponents(equation[1])) < 2 and equation[1] != "":
+      equation = split(removeDouble(input("\n- The degree of the polynomial is too low, enter another\n-")))
+
+    sideA = abc(equation[0])
+    sideB = abc(equation[1])
+    a = checkFloat(sideA[0] - sideB[0])
+    b = checkFloat(sideA[1] - sideB[1])
+    c = checkFloat(sideA[2] - sideB[2])
+    h = checkFloat((b * -1) / (2 * a))
+    k = checkFloat((a * (h ** 2)) + (b * h) + c)
+    h = h * -1
+    
+    vertexForm = f"y = {str(a)}(x "
+    if h < 0:
+      vertexForm += f"- {str(checkFloat(h * -1))}"
+    elif h > 0:
+      vertexForm += f"+ {str(h)}"
+    vertexForm += ")^2 "
+    if k < 0:
+      vertexForm += f"- {str(checkFloat(k * -1))}"
+    elif k > 0:
+      vertexForm += f"+ {str(k)}"
+    print(f"\nThe vertex form is:\n|  {vertexForm}")
+    
     print("__________________________________________________________________")
+    
+ 
   elif compString(program.lower(), "convert from vertex to standard form") or program == "3":
-    printStandardForm(input("\na(x - h)^2 + k = a(x - h)^2 + k\na(x - h)^2 + k\nEnter a quadratic in vertex form\n"))
+    
+    equation = input("\na(x - h)^2 + k = a(x - h)^2 + k\na(x - h)^2 + k\n\n- Enter a quadratic in vertex form\n-")
+  
+    equation = split(removeDouble(equation))
+    sideA = abc(equation[0])
+    sideB = abc(equation[1])
+    for i in range(len(sideA)):
+      if i > len(sideB) - 1:
+        break
+      sideA[i] -= sideB[i]
+      
+    sideA.pop(len(sideA) - 1)
+
+    print(f"\nThe standard form is:\n|  {write(sideA)}")
+    
     print("__________________________________________________________________")
+    
+ 
   elif compString(program.lower(), "factor by grouping") or program == "4":
-    groupFactor(input("\nEnter a 4 term polynomial\n"))
+    
+    function = input("\n- Enter a 4 term polynomial\n-")
+  
+    print()
+    function = split(removeDouble(function))
+    exponents = findExponents(function[0])
+    ignore = exponents
+    (ignore, exponents) = reorder(ignore, exponents)
+    sideA = abc(function[0])
+    sideB = abc(function[1])
+  
+    stop = False
+    for i in range(min(len(sideA), len(sideB))):
+      sideA[i] -= sideB[i]
+    function = sideA
+    for num in function:
+      if num % 1 != 0:
+        print("|  Can't be factored")
+        stop = True
+    
+    if not stop:
+      #If the polynomial is too long
+      if len(sideA) > 4:
+        length = len(sideA)
+        for num in sideA:
+          if num == 0:
+            length -= 1
+     
+      while length > 4:
+        function = input("- Your polynomial has too many terms. Enter a 4 term polynomial\n-")
+        function = split(removeDouble(function))
+        exponents = findExponents(function[0])
+        ignore = exponents
+        (ignore, exponents) = reorder(ignore, exponents)
+        sideA = abc(function[0])
+        sideB = abc(function[1])
+        for i in range(min(len(sideA), len(sideB))):
+          sideA[i] -= sideB[i]
+        function = sideA
+        length = len(function)
+        for num in function:
+          if num == 0:
+            length -= 1
+        print()
+        
+      #If the polynomial is too short
+      if len(sideA) < 4:
+        length = len(sideA)
+        for num in sideA:
+          if num == 0:
+            length -= 1
+     
+      while length < 4:
+        function = input("- Your polynomial has too few terms. Enter a 4 term polynomial\n-")
+        function = split(removeDouble(function))
+        exponents = findExponents(function[0])
+        ignore = exponents
+        (ignore, exponents) = reorder(ignore, exponents)
+        sideA = abc(function[0])
+        sideB = abc(function[1])
+        for i in range(min(len(sideA), len(sideB))):
+          sideA[i] -= sideB[i]
+        function = sideA
+        length = len(function)
+        for num in function:
+          if num == 0:
+            length -= 1
+        print()     
+
+      #Factor out X's if possible and a GCF
+      factor3Num = 1
+      for num in range(max(function), 1, -1):
+        usable = True
+        for coeff in function:
+          if coeff % num != 0:
+            usable = False
+        if usable:
+          for i in range(len(function)):
+            function[i] = function[i] / num
+          factor3Num = factor3Num * num
+    
+      factor3 = 0
+      if min(exponents) > 0:
+        factor3 = min(exponents)
+        for i in range(len(exponents)):
+          exponents[i] -= factor3
+      #Find GCFs
+      for GCF1 in range(int(max([math.fabs(function[0]), math.fabs(function[1])])), 0, -1):
+        if function[0] % GCF1 == 0 and function[1] % GCF1 == 0:
+          break
+      for GCF2 in range(int(max([math.fabs(function[2]), math.fabs(function[3])])), 0, -1):
+        if function[2] % GCF2 == 0 and function[3] % GCF2 == 0:
+          break
+      if function[0] == function[1] or function[0] == -function[1]:
+        GCF1 = function[0]
+      if function[2] == function[3] or function[2] == -function[3]:
+        GCF2 = function[2]
+        
+      #Divide all terms by GCFs
+      factor1Term1 = checkFloat(function[0] / GCF1)
+      factor1Term2 = checkFloat(function[1] / GCF1)
+      factor1Term1v2 = function[2] / GCF2
+      factor1Term2v2 = function[3] / GCF2
+      
+      stop = False
+      #If the second GCF needs to be made, negative, do so
+      if factor1Term1 != factor1Term1v2:
+        if factor1Term1 == -factor1Term1v2:
+          GCF2 = -GCF2
+        else:
+          print("Not factorable")
+          stop = True
+      
+      if not stop:
+        factor2Term1 = GCF1
+        factor2Term2 = GCF2
+      
+        #Find the lowest exponents of the Xs and divide by them
+        factor2x1 = int(min([exponents[0], exponents[1]]))
+        factor2x2 = int(min(exponents[2], exponents[3]))
+        if factor2x1 > 0:
+          factor1x1 = exponents[0] - factor2x1
+          factor1x2 = exponents[1] - factor2x1
+        else:
+          factor1x1 = exponents[0]
+          factor1x2 = exponents[1]
+        
+        #Create First Factor
+        if factor1x1 > 1:
+          factor1 = f"{str(factor1Term1)}x^{str(factor1x1)}"
+        elif factor1x1 == 1:
+          factor1 = f"{str(factor1Term1)}x"
+        else:
+          factor1 = str(factor2Term1)
+          
+        if factor1Term2 < 0:
+          factor1 += " - "
+          factor1Term2 = -factor1Term2
+        else:
+          factor1 += " + "
+          
+        if factor1x2 > 1:
+          factor1 += f"{str(factor1Term2)}x^{str(factor1x2)}"
+        elif factor1x2 == 1:
+          factor1 += f"{str(factor1Term2)}x"
+        else:
+          factor1 += str(factor1Term2)
+          
+        factor1 = write(abc(factor1))
+          
+        #Create Second factor
+        if factor2x1 > 1:
+          factor2 = f"{str(factor2Term1)}x^{str(factor2x1)}"
+        elif factor2x1 == 1:
+          factor2 = f"{str(factor2Term1)}x"
+        else:
+          factor2 = str(factor2Term1)
+          
+        if factor2Term2 < 0:
+          factor2 += " - "
+          factor2Term2 = -factor2Term2
+        else:
+          factor2 += " + "
+          
+        if factor2x2 > 1:
+          factor2 += f"{str(factor2Term2)}x^{str(factor2x2)}"
+        elif factor2x2 == 1:
+          factor2 += f"{str(factor2Term2)}x"
+        else:
+          factor2 += str(factor2Term2)
+        
+        factor2 = write(abc(factor2))
+        
+        if factor3 != 0:
+          print(f"|  ({write([factor3Num], [factor3])})",end="")
+        else:
+          print("|  ",end="")
+        print(f"({factor1})({factor2})\n")
+        
+        #Find if the factors can be factored further, solved, or can't be solved with this program
+        if max(findExponents(factor1)) == 2:
+          print(f"\n{factor1}")
+          solveQuadratic(factor1, False)
+        elif max(findExponents(factor1)) == 1:
+          solution = abc(factor1)
+          print(f"{factor1}\n|  The root is {str(checkFloat(-solution[1] / solution[0]))}")
+        if max(findExponents(factor2)) == 2:
+          print(f"\n{factor2}")
+          solveQuadratic(factor2, False)
+        elif max(findExponents(factor2)) == 1:
+          solution = abc(factor2)
+          print(f"factor2\n|  The root is {str(checkFloat(-solution[1] / solution[0]))}")
+        if factor3 != 0:
+          print(f"\n{write([factor3Num], [factor3])}\n|  The last root is 0",end = "")
+          if factor3 > 1:
+            print(f" mult. {str(factor3)}")
+          else:
+            print()
+        print()
+        
     print("__________________________________________________________________")
+    
+ 
   elif compString(program.lower(), "divide synthetically") or program == "5":
-    stop = input("Do you want to\n(1) Just divide once\n(2) Solve\n")
+    
+    stop = input("- Do you want to\n(1) Just divide once\n(2) Solve\n-")
     if compString(stop.lower(), "just divide once") or stop == "1":
       stop = True
     else:
       stop = False
-    syntheticDivision(input("\nEnter a polynomial in standard form with at least 4 terms\n"), stop)
+      
+    function = input("\n- Enter a polynomial of at least degree 3\n-")
+  
+    function = split(removeDouble(function))
+    degree = max(findExponents(function[0]))
+    while degree < 3:
+      function = split(removeDouble(input("\n- The degree of the polynomial must be at least 3, enter again\n-")))
+      degree = max(findExponents(function[0]))
+    
+    exponents = []
+    for exponent in range(degree, -1 , -1):
+      exponents.append(exponent)
+    
+    ignore = exponents
+    (ignore, exponents) = reorder(ignore, exponents)
+    sideA = abc(function[0])
+    sideB = abc(function[1])
+    
+    for i in range(min(len(sideA), len(sideB))):
+      sideA[i] -= sideB[i]
+    functionBackup = write(sideA, exponents)
+    nums = sideA
+    factors = []
+    remainder = ""
+    
+    while len(nums) > 3:
+      factorable = False
+      p = []
+      q = []
+      possible = []
+      LC = nums[0]
+      constant = nums[len(nums) - 1]
+      #Find p and q, then find possible zeros
+      for constantFactor in range(1, int(math.fabs(constant) + 1)):
+        if constant % constantFactor == 0:
+          p.append(constantFactor)
+          p.append(-constantFactor)
+      for lcFactor in range(1, int(math.fabs(LC) + 1)):
+        if LC % lcFactor == 0:
+          q.append(lcFactor)
+          q.append(-lcFactor)
+      
+      #If just dividing once, divide, and print result
+      if stop:
+        q = [1]
+        divisorBackup = removeDouble(input("\n- Enter the divisor\nx - a\n-"))
+        divExp = findExponents(divisorBackup)
+        divCoeff = abc(divisorBackup)
+        
+        while divExp != [1, 0] or divCoeff[0] != 1:
+          if divExp != [1, 0]:
+            divisorBackup = removeDouble(input("\n- The exponents are incorrect, enter again\n-"))
+            divExp = findExponents(divisorBackup)
+            divCoeff = abc(divisorBackup)
+          if divCoeff[0] != 1:
+            divisorBackup = removeDouble(input("\n- The coefficient of x must be 1, enter again\n-"))
+            divExp = findExponents(divisorBackup)
+            divCoeff = abc(divisorBackup)
+        
+        p = [-abc(divisorBackup)[1]]
+        divisorBackup = write(abc(divisorBackup))
+        
+      #Find possibilities
+      for pFactor in p:
+        for qFactor in q:
+          if pFactor / qFactor not in possible:
+            possible.append(pFactor / qFactor)
+      
+      #find if the factor is a zero
+      for factor in possible:
+        coefficients = [nums[0]]
+        for i in range(len(nums) - 1):
+          coefficients.append((coefficients[i] * factor) + nums[i + 1])
+        if stop:
+          print( )
+          if coefficients[len(coefficients) - 1] != 0:
+            remainder = str(checkFloat(coefficients[len(coefficients) - 1]))
+          coefficients.pop(len(coefficients) - 1)
+          result = write(coefficients)
+          printDivision(functionBackup, divisorBackup, result, remainder)
+          break
+        
+        #If the remainder is zero, record factor and start over with new polynomial
+        if coefficients[len(coefficients) - 1] == 0:
+          coefficients.pop(len(coefficients) - 1)
+          factors.append(factor)
+          nums = coefficients
+          factorable = True
+          break
+      if stop:
+        break
+      if not factorable:
+        print()
+        for factor in factors:
+          print("(x",end ="")
+          if factor < 1:
+            print(f" + {str(checkFloat(-factor))})",end="")
+          else:
+            print(f" - {str(checkFloat(factor))})",end="")
+        exponent = len(nums) - 1
+        polynomial = write(nums)
+        print(f"({polynomial})")
+        print("|  The polynomial can't be factored further")
+        stop = True
+        break
+      
+    if not stop:
+    
+      print("\nThe first ",end="")
+      if len(factors) > 1:
+        print(str(len(factors)) + " factors are:")
+        for factor in factors:
+          print("|  (x",end ="")
+          if factor < 1:
+            print(f" + {str(checkFloat(-factor))}), ",end="")
+          else:
+            print(f" - {str(checkFloat(factor))}), ",end="")
+          print(f"x = {str(checkFloat(factor))}")
+      else:
+        print(f"factor is:\n|  x = {str(checkFloat(factors[0]))}")
+      quadratic = write(nums)
+      print(f"\nThe remaining quadratic is:\n|  {quadratic}")
+      roots([nums[0], nums[1], nums[2], 2], [0, 0, 0, 0], False)
+      
     print("__________________________________________________________________")
-  elif compString(program.lower(), "do long division") or program == "6":
-    longDivision(input("Enter the dividend\n"), input("\nEnter the divisor\n"))
+    
+    
+  elif compString(program.lower(), "perform long division") or program == "6":
+    
+    function = input("- Enter the dividend\n-") 
+    divisor = input("\n- Enter the divisor\n-")
+  
+    #Process function
+    divisorBackup = write(abc(divisor))
+    function = split(removeDouble(function))
+    exponents = findExponents(function[0])
+    sideA = abc(function[0])
+    sideB = abc(function[1])
+    for i in range(min(len(sideA), len(sideB))):
+      sideA[i] -= sideB[i]
+    nums = sideA
+    functionBackup = write(nums)
+    divisorExp = findExponents(divisor)
+    divisor = abc(divisor)
+    place = 0
+    result = []
+    remainder = ""
+
+    #Loop until division is completed
+    while max(exponents) >= divisorExp[0]:
+      coefficient = nums[0] / divisor[0]
+      for num in divisor:
+        nums[place] -= coefficient * num
+        place += 1
+      emptyTerms = 0
+      
+      #If there is more division to do and there are empty terms at the beginning, remove them
+      if len(nums) > 0:
+        while True:
+          if nums[0] == 0:
+            nums.pop(0)
+          else:
+            break
+          if len(nums) < 1:
+            break
+          
+      #Find out how many terms there still are
+      exponents = []
+      for i in range(len(nums) - 1, -1, -1):
+        exponents.append(i)
+      result.append(coefficient)
+      place = 0
+      if nums == []:
+        break
+    
+    #If there is a remainder, process it into a polynomial
+    if len(nums) > 0:
+      remainder = write(nums)
+    
+    #Process the quotient into a polynomial
+    result = write(result)
+    printDivision(functionBackup, divisorBackup, result, remainder)
+      
     print("__________________________________________________________________")
-  choice = input("\nDo you want to do anything else?(Yes/No)\n")
+    
+  
+  elif compString(program.lower(), "multiply polynomials") or program == "7":
+    
+    factors = []
+    stop = False
+    factor = input("- Enter a factor('stop' to stop, 'back' to re-enter factor)\n-")
+    if factor.lower() == "stop":
+      stop = True
+    else:
+      factors.append(factor)
+    
+    while len(factors) < 2 and len(factors) > 0:
+      if stop and len(factors) < 2:
+        stop = input("\n- You only have one factor. Do you want to enter another?(yes/no)\n-")
+        if stop.lower() == "yes":
+          stop = False
+        else:
+          break
+      while not stop:
+        factor = input("\n- Enter a factor\n-")
+        while factor.lower() == "back":
+          factors.pop(len(factors) - 1)
+          factor = input("\n- Re-enter the factor\n-")
+        if factor.lower() == "stop":
+          stop = True
+        else:
+          factors.append(factor)
+    if len(factors) > 1:
+      multiplyPol(factors)
+      
+    print("__________________________________________________________________")
+    
+    
+  elif compString(program.lower(), "make composite function") or program == "8":
+    
+    Fx = input("- Enter the first function f(x)\n-")
+    Gx = input("\n- Enter the second function g(x)\n-")
+  
+    Fx = removeDouble(Fx)
+    Gx = removeDouble(Gx)
+    Fexp = findExponents(Fx)
+    Fcoeff = read(Fx)
+    
+    #Find all terms with an x, and substitute in g(x)
+    terms = []
+    for i in range(len(Fexp)):
+      if Fexp[i] == 0:
+        term = "1"
+      else:
+        term = Gx
+        for j in range(Fexp[i] - 2, -1, -1):
+          term = multiplyPol([term, Gx], True)
+      termExp = findExponents(term)
+      termCoeff = read(term)
+      for j in range(len(termCoeff)):
+        termCoeff[j] = termCoeff[j] * Fcoeff[i]
+      terms.append(write(termCoeff, termExp))
+    
+    #Read new function
+    coeff = []
+    exponents = []
+    for i in range(len(terms)):
+      exp = findExponents(terms[i])
+      nums = read(terms[i])
+      for j in range(len(exp)):
+        coeff.append(nums[j])
+        exponents.append(exp[j])
+    
+    #Combine like terms
+    for i in range(len(coeff)):
+      for j in range(len(coeff)):
+        if exponents[i] == exponents[j] and i != j:
+          coeff[i] += coeff[j]
+          coeff[j] = 0
+
+    print(f"\n|  FoG(x) = {write(coeff, exponents)}")
+  
+    print("__________________________________________________________________")
+    
+  
+  choice = input("\n- Do you want to do anything else?(Yes/No)\n-")
   if choice.lower() == "no":
     exit()
   else:
