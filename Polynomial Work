@@ -793,15 +793,22 @@ def solveQuadratic(function, findExtra = True, choice = False):
   exponentsB = findExponents(sideB)
   exponentsA.append(max(exponentsB))
   nums = abc(sideA)
-  while 0 in nums:
-    nums.remove(0)
-    
-  minExp = 0
+  for i in range(max(exponentsA), -1, -1):
+    if i not in exponentsA:
+      exponentsA.append(i)
+  (exponentsA, ignore) = reorder(exponentsA, exponentsA)
+  minExp = max(exponentsA)
   for i in range(len(exponentsA) - 1, -1, -1):
-    if sideA[i] != 0:
+    if nums[i] != 0 and exponentsA[i] < minExp:
       minExp = exponentsA[i]
-  
-  while (max(exponentsA) < 2 and "(" not in list(sideA)) or (len(nums) > 3 and "(" not in list(sideA)) or  (minExp + (2 - max(exponentsA)) < 0) or (minExp < 1 and exponentsA[0] == 3):
+      
+  for i in range(len(nums) -1, -1, -1):
+    if nums[i] == 0:
+      nums.pop(i)
+      exponentsA.pop(i)
+      
+      
+  while (max(exponentsA) < 2 and "(" not in list(sideA)) or (len(nums) > 3 and "(" not in list(sideA)) or  (minExp + (2 - max(exponentsA)) < 0) or (minExp < 1 and exponentsA[0] > 2):
     
     # If the degree is too low
     while max(exponentsA) < 2 and "(" not in list(sideA):
@@ -811,20 +818,34 @@ def solveQuadratic(function, findExtra = True, choice = False):
       exponentsA = findExponents(sideA)
       exponentsB = findExponents(sideB)
       exponentsA.append(max(exponentsB))
-      
+      for i in range(max(exponentsA), -1, -1):
+        if i not in exponentsA:
+          exponentsA.append(i)
+      (exponentsA, ignore) = reorder(exponentsA, exponentsA)
+      for i in range(len(nums) -1, -1, -1):
+        if nums[i] == 0:
+          nums.pop(i)
+          exponentsA.pop(i)
+
     #If there is a constant term
     while minExp < 1 and exponentsA[0] > 2:
-      function = split(removeDouble(input("\n- A polynomial with a degree above 2 can't have a constant, enter again\n-")))
+      function = split(removeDouble(input("\n-There can't be a constant if the degree is over 2, enter again \n-")))
       sideA = function[0]
       sideB = function[1]
       exponentsA = findExponents(sideA)
       nums = abc(sideA)
-      while 0 in nums:
-        nums.remove(0)
-      minExp = 0
+      minExp = max(exponentsA)
       for i in range(len(exponentsA) - 1, -1, -1):
-        if sideA[i] != 0:
+        if sideA[i] != 0 and exponentsA[i] < minExp:
           minExp = exponentsA[i]
+      for i in range(max(exponentsA), -1, -1):
+        if i not in exponentsA:
+          exponentsA.append(i)
+      (exponentsA, ignore) = reorder(exponentsA, exponentsA)
+      for i in range(len(nums) -1, -1, -1):
+        if nums[i] == 0:
+          nums.pop(i)
+          exponentsA.pop(i)
       
   
     # If the polynomial has too many terms
@@ -834,8 +855,14 @@ def solveQuadratic(function, findExtra = True, choice = False):
       sideB = function[1]
       exponentsA = findExponents(sideA)
       nums = abc(sideA)
-      while 0 in nums:
-        nums.remove(0)
+      for i in range(max(exponentsA), -1, -1):
+        if i not in exponentsA:
+          exponentsA.append(i)
+      (exponentsA, ignore) = reorder(exponentsA, exponentsA)
+      for i in range(len(nums) -1, -1, -1):
+        if nums[i] == 0:
+          nums.pop(i)
+          exponentsA.pop(i)
         
     #If the exponents don't decend correctly
     while minExp + (2 - max(exponentsA)) < 0:
@@ -844,12 +871,18 @@ def solveQuadratic(function, findExtra = True, choice = False):
       sideB = function[1]
       exponentsA = findExponents(sideA)
       nums = abc(sideA)
-      while 0 in nums:
-        nums.remove(0)
-      minExp = 0
+      minExp = max(exponentsA)
       for i in range(len(exponentsA) - 1, -1, -1):
-        if sideA[i] != 0:
+        if sideA[i] != 0 and exponentsA[i] < minExp:
           minExp = exponentsA[i]
+      for i in range(max(exponentsA), -1, -1):
+        if i not in exponentsA:
+          exponentsA.append(i)
+      (exponentsA, ignore) = reorder(exponentsA, exponentsA)
+      for i in range(len(nums) -1, -1, -1):
+        if nums[i] == 0:
+          nums.pop(i)
+          exponentsA.pop(i)
   
   #If the degree is too high, but the exponents can have x's factored out to get 2, 1, 0, then use
   if max(exponentsA) > 3:
