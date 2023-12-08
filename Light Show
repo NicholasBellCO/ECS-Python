@@ -1,0 +1,1486 @@
+//Left design
+int yellow = 2;
+int red = 3;
+int blue = 4;
+
+//Right Design
+int leftY = 5;
+int leftRB = 6;
+int rightRB = 7;
+int rightY = 8;
+
+float convert(int num = 0) {
+  if (num == 1) {
+    num = 4 * 652.173913;
+  } if (num == 2) {
+    num = 2 * 652.173913;
+  } if (num == 4) {
+    num = 652.173913;
+  } if (num == 8) {
+    num = 0.5 * 652.173913;
+  } if (num == 16) {
+    num = 0.25 * 652.173913;
+  } if (num == 32) {
+    num = 0.125 * 652.173913;
+  }
+  return num;
+}
+
+void setup() {
+  for (int i = 2; i < 9; i = i + 1) {
+    pinMode(i, OUTPUT);
+  }
+  
+  delay(convert(2));
+  delay(convert(4));
+  delay(convert(8));
+  delay(convert(16));
+  
+  
+  //||||____________VERSE 1 PT 1__________________|||||||
+  
+  //___________PICKUP__________
+  //beat 3
+  digitalWrite(leftY, HIGH);   //a
+  digitalWrite(rightY, HIGH);
+  delay(convert(16));
+  
+  //beat 4
+  delay(convert(16));          //4
+  
+  for (int i = 0; i <= 1; i ++) {
+  
+    digitalWrite(leftY, LOW);     //e
+    digitalWrite(rightY, LOW);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, LOW);  //+
+    digitalWrite(leftRB, HIGH);
+    if (i == 1) {
+      digitalWrite(yellow, HIGH);
+    }
+    delay(convert(16));
+
+    digitalWrite(rightRB, HIGH); //a
+    digitalWrite(leftRB, LOW);
+    digitalWrite(yellow, LOW);
+    delay(convert(16));
+
+    //_______MEASURE 1_____________
+
+    //beat 1
+    digitalWrite(leftRB, HIGH);  //1
+    digitalWrite(yellow, HIGH);
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    delay(convert(16));
+
+    digitalWrite(yellow, LOW);
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    delay(convert(16));         // e
+
+    digitalWrite(yellow, HIGH);
+    digitalWrite(red, LOW);     // +
+    digitalWrite(blue, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftY, HIGH);  // a
+    digitalWrite(rightY, HIGH);
+    digitalWrite(yellow, LOW);
+    delay(convert(16));
+
+    //beat 2
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    delay(convert(16));         // 2
+
+    digitalWrite(leftY, LOW);   // e
+    digitalWrite(rightY, LOW);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, LOW); // +
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, HIGH);// a
+    digitalWrite(leftRB, LOW);
+    delay(convert(16));
+
+    //beat 3
+    digitalWrite(leftRB, HIGH); // 3
+    delay(convert(16));
+
+    delay(convert(16));         // e
+
+    digitalWrite(yellow, HIGH); // +
+    digitalWrite(rightRB, LOW);
+    digitalWrite(leftRB, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftY, HIGH);  // a
+    digitalWrite(rightY, HIGH);
+    digitalWrite(yellow, LOW);
+    delay(convert(16));
+
+    //beat 4
+    delay(convert(16));         // 4
+
+    digitalWrite(leftY, LOW);   // e
+    digitalWrite(rightY, LOW);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, LOW); // +
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(yellow, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, HIGH);// a
+    digitalWrite(leftRB, LOW);
+    digitalWrite(yellow, LOW);
+    delay(convert(16));
+
+  //__________MEASURE 2________________
+
+    //beat 1
+    digitalWrite(leftY, HIGH);  // 1
+    digitalWrite(rightY, HIGH);
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(red, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftY, LOW);  // e
+    digitalWrite(rightY, LOW);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(red, LOW);
+    delay(convert(16));
+
+    digitalWrite(red, HIGH); // +
+    digitalWrite(leftY, HIGH);
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    digitalWrite(red, LOW); // a
+    digitalWrite(leftY, LOW);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+
+    //beat 2
+
+    digitalWrite(rightRB, HIGH); // 2
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, LOW);  // e
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftY, HIGH);   // +
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    delay(convert(16));          // a
+
+    //beat 3
+
+    digitalWrite(blue, HIGH);   //3
+    delay(convert(16));
+
+    digitalWrite(blue, LOW);   // e
+    delay(convert(16));
+
+    digitalWrite(leftY, LOW);   // +
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    digitalWrite(blue, HIGH);
+    delay(convert(16));
+
+    digitalWrite(blue, LOW);  // a
+    digitalWrite(leftY, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    //beat 4
+    delay(convert(16));          //4
+
+    digitalWrite(leftY, LOW);     //e
+    digitalWrite(rightY, LOW);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, LOW);  //+
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(yellow, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, HIGH); //a
+    digitalWrite(leftRB, LOW);
+    digitalWrite(yellow, LOW);
+    delay(convert(16));
+
+    //_______MEASURE 3_____________
+
+    //beat 1
+    digitalWrite(leftRB, HIGH);  //1
+    digitalWrite(yellow, HIGH);
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    delay(convert(16));
+
+    digitalWrite(yellow, LOW);
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    delay(convert(16));         // e
+
+    digitalWrite(yellow, HIGH);
+    digitalWrite(red, LOW);     // +
+    digitalWrite(blue, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftY, HIGH);  // a
+    digitalWrite(rightY, HIGH);
+    digitalWrite(yellow, LOW);
+    delay(convert(16));
+
+    //beat 2
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    delay(convert(16));         // 2
+
+    digitalWrite(leftY, LOW);   // e
+    digitalWrite(rightY, LOW);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, LOW); // +
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, HIGH);// a
+    digitalWrite(leftRB, LOW);
+    delay(convert(16));
+
+    //beat 3
+    digitalWrite(leftRB, HIGH); // 3
+    delay(convert(16));
+
+    delay(convert(16));         // e
+
+    digitalWrite(yellow, HIGH); // +
+    digitalWrite(rightRB, LOW);
+    digitalWrite(leftRB, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftY, HIGH);  // a
+    digitalWrite(rightY, HIGH);
+    digitalWrite(yellow, LOW);
+    delay(convert(16));
+
+    //beat 4
+    delay(convert(16));         // 4
+
+    digitalWrite(leftY, LOW);   // e
+    digitalWrite(rightY, LOW);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, LOW); // +
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(yellow, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, HIGH);// a
+    digitalWrite(leftRB, LOW);
+    digitalWrite(yellow, LOW);
+    delay(convert(16));
+
+  //__________MEASURE 4________________
+
+    //beat 1
+    digitalWrite(leftY, HIGH);  // 1
+    digitalWrite(rightY, HIGH);
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(red, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftY, LOW);  // e
+    digitalWrite(rightY, LOW);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(red, LOW);
+    delay(convert(16));
+
+    digitalWrite(red, HIGH); // +
+    digitalWrite(leftY, HIGH);
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    digitalWrite(red, LOW); // a
+    digitalWrite(leftY, LOW);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+
+    //beat 2
+
+    digitalWrite(rightRB, HIGH); // 2
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightRB, LOW);  // e
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftY, HIGH);   // +
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    delay(convert(16));          // a
+
+    //beat 3
+
+    digitalWrite(blue, HIGH);   // 3
+    delay(convert(16));
+
+    digitalWrite(blue, LOW);   // e
+    delay(convert(16));
+
+    digitalWrite(blue, HIGH);  // +
+    digitalWrite(leftY, LOW);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+
+    digitalWrite(blue, LOW);  // a
+    digitalWrite(leftY, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    //beat 4
+
+    delay(convert(16));     // 4
+
+    digitalWrite(leftY, LOW);
+    digitalWrite(rightY, LOW);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));     // e
+
+    digitalWrite(yellow, HIGH);  // +
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, LOW);
+    delay(convert(16));
+
+    digitalWrite(yellow, LOW);   // a
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    //|||_________________TRUMPET SOLO_________________||||
+
+    //___________MEASURE 1_____________
+
+    //beat 1
+
+    digitalWrite(leftY, HIGH);
+    digitalWrite(rightY, HIGH);
+    digitalWrite(yellow, HIGH);  // 1
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    digitalWrite(rightRB, LOW);
+    delay(convert(16));
+
+    digitalWrite(rightY, LOW);
+    digitalWrite(yellow, LOW);  // e
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftY, LOW);
+    digitalWrite(yellow, HIGH); // +
+    delay(convert(16));
+
+    digitalWrite(leftY, HIGH);
+    digitalWrite(yellow, LOW);  // a
+    delay(convert(16));
+
+    //beat 2
+    digitalWrite(leftY, LOW);   // 2
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW);  // e
+    delay(convert(32));
+
+    digitalWrite(leftY, HIGH);
+    delay(convert(32));
+
+    digitalWrite(leftY, LOW);   // +
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW);   // a
+    digitalWrite(rightRB, HIGH);
+    delay(convert(32));
+
+    digitalWrite(rightRB, LOW);
+    digitalWrite(leftRB, HIGH);
+    delay(convert(32));
+
+    //beat 3
+
+    digitalWrite(rightY, HIGH);  // 3
+    digitalWrite(leftRB, LOW);
+    delay(convert(32));
+
+    digitalWrite(rightY, LOW);
+    delay(convert(32));
+
+    digitalWrite(rightY, HIGH);  // e
+    delay(convert(16));
+
+    digitalWrite(yellow, HIGH);  // +
+    delay(convert(16));
+
+    digitalWrite(rightY, LOW);   // a
+    digitalWrite(yellow, LOW);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    //beat 4
+
+    digitalWrite(rightRB, LOW);  // 4
+    delay(convert(16));
+
+    digitalWrite(rightRB, HIGH);  // e
+    delay(convert(16));
+
+    digitalWrite(leftRB, HIGH);  // +
+    digitalWrite(yellow, HIGH);
+    delay(convert(16));
+
+    digitalWrite(yellow, LOW);   // a
+    delay(convert(32));
+
+    digitalWrite(yellow, HIGH);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    delay(convert(32));
+
+    //____________MEASURE 2_____________
+
+    //beat 1
+
+    digitalWrite(yellow, LOW);  // 1
+    digitalWrite(red, HIGH);
+    digitalWrite(leftY, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    digitalWrite(red, LOW);   // e
+    digitalWrite(leftY, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+
+    digitalWrite(red, HIGH); // +
+    delay(convert(16));
+
+    digitalWrite(red, LOW);  // a
+    digitalWrite(leftY, HIGH);
+    delay(convert(16));
+
+    //beat 2
+    digitalWrite(leftRB, HIGH);  // 2
+    digitalWrite(leftY, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW);  // e
+    delay(convert(32));
+
+    digitalWrite(leftY, HIGH);
+    delay(convert(32));
+
+    digitalWrite(leftY, LOW);  // +
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW); // a
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    //beat 3
+
+    digitalWrite(red, HIGH);  // 3
+    digitalWrite(rightY, HIGH);
+    digitalWrite(rightRB, LOW);
+    delay(convert(32));
+
+    digitalWrite(rightY, LOW);
+    delay(convert(32));
+
+    digitalWrite(red, LOW);   // e
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    digitalWrite(red, HIGH);   // +
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+
+    digitalWrite(red, LOW);   // a
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    //beat 4
+    digitalWrite(rightRB, LOW);
+    digitalWrite(leftRB, LOW);
+    delay(convert(4));  // 4
+
+    //___________MEASURE 3________________
+
+    //beat 1
+
+    digitalWrite(leftY, HIGH);  // 1
+    digitalWrite(rightY, HIGH);
+    digitalWrite(rightRB, LOW);
+    if (i != 1) {
+      digitalWrite(yellow, HIGH);
+      digitalWrite(red, HIGH);
+      digitalWrite(blue, HIGH);
+    }
+    delay(convert(16));
+
+    digitalWrite(rightY, LOW);
+    digitalWrite(yellow, LOW);  // e
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftY, LOW);   // +
+    if (i != 1) {
+      digitalWrite(red, HIGH);
+    }
+    delay(convert(16));
+
+    digitalWrite(leftY, HIGH);  // a
+    digitalWrite(red, LOW); 
+    delay(convert(16));
+
+    //beat 2
+    digitalWrite(leftY, LOW);   // 2
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW);  // e
+    delay(convert(32));
+
+    digitalWrite(leftY, HIGH);
+    delay(convert(32));
+
+    digitalWrite(leftY, LOW);   // +
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW);   // a
+    digitalWrite(rightRB, HIGH);
+    delay(convert(32));
+
+    digitalWrite(rightRB, LOW);
+    digitalWrite(leftRB, HIGH);
+    delay(convert(32));
+
+    //beat 3
+
+    digitalWrite(rightY, HIGH);  // 3
+    digitalWrite(leftRB, LOW);
+    delay(convert(32));
+
+    digitalWrite(rightY, LOW);
+    delay(convert(32));
+
+    digitalWrite(rightY, HIGH);  // e
+    delay(convert(16));
+    
+    if (i != 1) {
+      digitalWrite(red, HIGH);  // +
+    }
+    delay(convert(16));
+
+    digitalWrite(rightY, LOW);   // a
+    digitalWrite(red, LOW);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    //beat 4
+
+    digitalWrite(rightRB, LOW);  // 4
+    delay(convert(16));
+
+    digitalWrite(rightRB, HIGH);  // e
+    delay(convert(16));
+
+    digitalWrite(leftRB, HIGH);  // +
+    if (i != 1) {
+      digitalWrite(red, HIGH);
+    }
+    delay(convert(16));
+
+    digitalWrite(red, LOW);   // a
+    delay(convert(32));
+    
+    if (i != 1) {
+      digitalWrite(red, HIGH);
+    }
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    delay(convert(32));
+
+    //____________MEASURE 4_____________
+
+    //beat 1
+
+    digitalWrite(red, LOW);  // 1
+    if (i != 1) {
+      digitalWrite(blue, HIGH);
+    }
+    digitalWrite(leftY, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    digitalWrite(blue, LOW);   // e
+    digitalWrite(leftY, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    if (i != 1) {
+      digitalWrite(blue, HIGH); // +
+    }
+    delay(convert(16));
+
+    digitalWrite(blue, LOW);  // a
+    digitalWrite(leftY, HIGH);
+    delay(convert(16));
+
+    //beat 2
+    digitalWrite(leftRB, HIGH);  // 2
+    digitalWrite(leftY, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW);  // e
+    delay(convert(32));
+
+    digitalWrite(leftY, HIGH);
+    delay(convert(32));
+
+    digitalWrite(leftY, LOW);  // +
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW); // a
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    //beat 3
+    
+    if (i != 1) {
+      digitalWrite(blue, HIGH);  // 3
+    }
+    digitalWrite(rightY, HIGH);
+    digitalWrite(rightRB, LOW);
+    delay(convert(32));
+
+    digitalWrite(rightY, LOW);
+    delay(convert(32));
+
+    digitalWrite(blue, LOW);   // e
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+    
+    if (i != 1) {
+      digitalWrite(blue, HIGH);   // +
+    }
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+
+    digitalWrite(blue, LOW);   // a
+    digitalWrite(rightY, HIGH);
+    digitalWrite(leftY, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(leftRB, HIGH);
+    delay(convert(32));
+    
+    if (i == 0) {
+      digitalWrite(rightRB, LOW);
+    }
+    delay(convert(32));
+
+    //||||____________VERSE 1 PT 2 on repeat__________||||
+    //beat 4
+
+    delay(convert(16));  // 4
+  }
+  
+  delay(convert(16));  // e
+  delay(convert(8));  // + a
+  
+  //|||||_____________CHORUS PT 1_____________||||
+  
+  for (int i = 0; i <= 1; i ++) {
+    
+    //_________________MEASURE 1_______________
+    
+    //beat 1
+    
+    digitalWrite(yellow, HIGH); // 1
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    digitalWrite(leftY, LOW);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    digitalWrite(yellow, LOW); // e
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    delay(convert(16));
+    
+    digitalWrite(yellow, HIGH); // +
+    digitalWrite(rightY, HIGH);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+    
+    digitalWrite(yellow, LOW); // a
+    delay(convert(16));
+    
+    //beat 2
+    
+    digitalWrite(leftY, HIGH);  // 2
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    digitalWrite(leftY, LOW);  // e
+    digitalWrite(leftRB, LOW);
+    delay(convert(16));
+    
+    digitalWrite(rightY, HIGH); // +
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+    
+    delay(convert(16));    // a
+    
+    //beat 3
+    
+    digitalWrite(leftY, HIGH);  // 3
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    digitalWrite(leftY, LOW);
+    digitalWrite(leftRB, LOW);
+    delay(convert(16)); // e
+    
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    digitalWrite(yellow, HIGH);  // +
+    delay(convert(16));
+    
+    digitalWrite(yellow, LOW);  // a
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    //beat 4
+    
+    digitalWrite(leftY, HIGH);  // 4
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+    
+    delay(convert(16));  // e
+    
+    digitalWrite(yellow, HIGH);  // +
+    delay(convert(16));
+    
+    digitalWrite(yellow, LOW);   // a
+    digitalWrite(leftY, LOW);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    //___________MEASURE 2_________________
+    
+    //beat 1
+    
+    digitalWrite(yellow, HIGH);  // 1
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    delay(convert(16));
+    
+    digitalWrite(yellow, LOW);  // e
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    delay(convert(16));
+    
+    digitalWrite(yellow, HIGH);  // +
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+    
+    digitalWrite(yellow, LOW);  // a
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    delay(convert(16));
+    
+    //beat 2
+    
+    digitalWrite(leftY, HIGH); // 2
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    digitalWrite(leftY, LOW);  // e
+    digitalWrite(leftRB, LOW);
+    delay(convert(16));
+    
+    digitalWrite(rightY, HIGH); // +
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(leftY, LOW);
+    delay(convert(16));
+    
+    delay(convert(16));   // a
+    
+   //beat 3
+    
+    digitalWrite(yellow, HIGH);  // 3
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    digitalWrite(leftY, HIGH);
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    digitalWrite(yellow, LOW);  // e
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    digitalWrite(leftY, LOW);
+    digitalWrite(leftRB, LOW);
+    delay(convert(16));
+    
+    digitalWrite(yellow, HIGH);  // +
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+    
+    digitalWrite(yellow, LOW);  // a
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    //beat 4
+    
+    digitalWrite(leftY, HIGH);   // 4
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+    
+    delay(convert(8));     // e +
+    
+    digitalWrite(leftY, LOW);   // a
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    //_____________MEASURE 3______________
+    
+    //beat 1
+    
+    digitalWrite(yellow, HIGH);  // 1
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    digitalWrite(leftY, LOW);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    digitalWrite(yellow, LOW);  // e
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    delay(convert(16));
+    
+    digitalWrite(red, HIGH);    // +
+    digitalWrite(rightY, HIGH);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+    
+    digitalWrite(red, LOW);    // a
+    delay(convert(16));
+    
+    //beat 2
+    
+    digitalWrite(leftY, HIGH);   // 2
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    digitalWrite(leftY, LOW);    // e
+    digitalWrite(leftRB, LOW);
+    delay(convert(16));
+    
+    digitalWrite(rightY, HIGH);   // +
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(leftY, LOW);
+    delay(convert(16));
+    
+    delay(convert(16));     // a
+    
+    
+    //beat 3
+    
+    digitalWrite(leftY, HIGH);   // 3
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));  
+    
+    digitalWrite(leftY, LOW);   // e
+    digitalWrite(leftRB, LOW);
+    delay(convert(16)); 
+    
+    digitalWrite(red, HIGH);  // +
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+    
+    digitalWrite(red, LOW);  // a
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    //beat 4
+    
+    digitalWrite(leftY, HIGH);    // 4
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+    
+    delay(convert(16));  // e
+    
+    digitalWrite(red, HIGH); // +
+    delay(convert(16));
+    
+    digitalWrite(red, LOW);  // a
+    digitalWrite(leftY, LOW);  
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    //______________MEASURE 4_______________
+    
+    //beat 1
+    
+    digitalWrite(blue, HIGH);  // 1
+    digitalWrite(leftY, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+    
+    digitalWrite(blue, LOW);   // e
+    delay(convert(16));
+    
+    digitalWrite(blue, HIGH);  // +
+    digitalWrite(leftY, LOW);
+    digitalWrite(rightY, LOW);
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+    
+    digitalWrite(blue, LOW);   // a
+    delay(convert(16));
+    
+    //beat 2
+    
+    digitalWrite(leftY, HIGH);    // 2 e
+    digitalWrite(rightY, HIGH);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    delay(convert(8));
+    
+    digitalWrite(leftY, LOW);
+    digitalWrite(rightY, LOW);
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);   // + a
+    delay(convert(8));
+    
+    //beat 3
+    
+    digitalWrite(blue, HIGH);  // 1
+    digitalWrite(leftY, HIGH);
+    digitalWrite(rightY, HIGH);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    delay(convert(16));
+    
+    digitalWrite(blue, LOW);   // e
+    delay(convert(16));
+    
+    digitalWrite(blue, HIGH);  // +
+    digitalWrite(leftY, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+    
+    digitalWrite(blue, LOW);   // a
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+    
+    //beat 4
+    
+    delay(convert(16));   // 4
+    
+    digitalWrite(leftRB, LOW);   // e
+    digitalWrite(rightRB, LOW);
+    delay(convert(16));
+    
+    digitalWrite(yellow, HIGH);   // +
+    digitalWrite(leftY, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+    
+    digitalWrite(yellow, LOW);   // a
+    digitalWrite(leftY, LOW);
+    digitalWrite(rightY, LOW);
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+    
+    
+    //||||_________CHORUS PT2 ON REPEAT____________||||
+   
+  }
+  digitalWrite(leftRB, LOW);
+  digitalWrite(rightRB, LOW);
+  
+  //||||____________TRUMPET SOLO______________|||||||||
+  
+    //___________MEASURE 1_____________
+
+    //beat 1
+
+    digitalWrite(leftY, HIGH);
+    digitalWrite(rightY, HIGH);
+    digitalWrite(yellow, HIGH);  // 1
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    digitalWrite(rightRB, LOW);
+    delay(convert(16));
+
+    digitalWrite(rightY, LOW);
+    digitalWrite(yellow, LOW);  // e
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftY, LOW);
+    digitalWrite(yellow, HIGH); // +
+    delay(convert(16));
+
+    digitalWrite(leftY, HIGH);
+    digitalWrite(yellow, LOW);  // a
+    delay(convert(16));
+
+    //beat 2
+    digitalWrite(leftY, LOW);   // 2
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW);  // e
+    delay(convert(32));
+
+    digitalWrite(leftY, HIGH);
+    delay(convert(32));
+
+    digitalWrite(leftY, LOW);   // +
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW);   // a
+    digitalWrite(rightRB, HIGH);
+    delay(convert(32));
+
+    digitalWrite(rightRB, LOW);
+    digitalWrite(leftRB, HIGH);
+    delay(convert(32));
+
+    //beat 3
+
+    digitalWrite(rightY, HIGH);  // 3
+    digitalWrite(leftRB, LOW);
+    delay(convert(32));
+
+    digitalWrite(rightY, LOW);
+    delay(convert(32));
+
+    digitalWrite(rightY, HIGH);  // e
+    delay(convert(16));
+
+    digitalWrite(yellow, HIGH);  // +
+    delay(convert(16));
+
+    digitalWrite(rightY, LOW);   // a
+    digitalWrite(yellow, LOW);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    //beat 4
+
+    digitalWrite(rightRB, LOW);  // 4
+    delay(convert(16));
+
+    digitalWrite(rightRB, HIGH);  // e
+    delay(convert(16));
+
+    digitalWrite(leftRB, HIGH);  // +
+    digitalWrite(yellow, HIGH);
+    delay(convert(16));
+
+    digitalWrite(yellow, LOW);   // a
+    delay(convert(32));
+
+    digitalWrite(yellow, HIGH);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    delay(convert(32));
+
+    //____________MEASURE 2_____________
+
+    //beat 1
+
+    digitalWrite(yellow, LOW);  // 1
+    digitalWrite(red, HIGH);
+    digitalWrite(leftY, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    digitalWrite(red, LOW);   // e
+    digitalWrite(leftY, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+
+    digitalWrite(red, HIGH); // +
+    delay(convert(16));
+
+    digitalWrite(red, LOW);  // a
+    digitalWrite(leftY, HIGH);
+    delay(convert(16));
+
+    //beat 2
+    digitalWrite(leftRB, HIGH);  // 2
+    digitalWrite(leftY, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW);  // e
+    delay(convert(32));
+
+    digitalWrite(leftY, HIGH);
+    delay(convert(32));
+
+    digitalWrite(leftY, LOW);  // +
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW); // a
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    //beat 3
+
+    digitalWrite(red, HIGH);  // 3
+    digitalWrite(rightY, HIGH);
+    digitalWrite(rightRB, LOW);
+    delay(convert(32));
+
+    digitalWrite(rightY, LOW);
+    delay(convert(32));
+
+    digitalWrite(red, LOW);   // e
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+
+    digitalWrite(red, HIGH);   // +
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+
+    digitalWrite(red, LOW);   // a
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    //beat 4
+    digitalWrite(rightRB, LOW);
+    digitalWrite(leftRB, LOW);
+    delay(convert(4));  // 4
+
+    //___________MEASURE 3________________
+
+    //beat 1
+
+    digitalWrite(leftY, HIGH);  // 1
+    digitalWrite(rightY, HIGH);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(yellow, HIGH);
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    delay(convert(16));
+
+    digitalWrite(rightY, LOW);
+    digitalWrite(yellow, LOW);  // e
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    delay(convert(16));
+
+    digitalWrite(leftY, LOW);   // +
+    digitalWrite(red, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftY, HIGH);  // a
+    digitalWrite(red, LOW); 
+    delay(convert(16));
+
+    //beat 2
+    digitalWrite(leftY, LOW);   // 2
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW);  // e
+    delay(convert(32));
+
+    digitalWrite(leftY, HIGH);
+    delay(convert(32));
+
+    digitalWrite(leftY, LOW);   // +
+    digitalWrite(leftRB, HIGH);
+    delay(convert(16));
+
+    digitalWrite(leftRB, LOW);   // a
+    digitalWrite(rightRB, HIGH);
+    delay(convert(32));
+
+    digitalWrite(rightRB, LOW);
+    digitalWrite(leftRB, HIGH);
+    delay(convert(32));
+
+    //beat 3
+
+    digitalWrite(rightY, HIGH);  // 3
+    digitalWrite(leftRB, LOW);
+    delay(convert(32));
+
+    digitalWrite(rightY, LOW);
+    delay(convert(32));
+
+    digitalWrite(rightY, HIGH);  // e
+    delay(convert(16));
+    
+    digitalWrite(red, HIGH);  // +
+    delay(convert(16));
+
+    digitalWrite(rightY, LOW);   // a
+    digitalWrite(red, LOW);
+    digitalWrite(rightRB, HIGH);
+    delay(convert(16));
+
+    //beat 4
+
+    digitalWrite(rightRB, LOW);  // 4
+    delay(convert(16));
+
+    digitalWrite(rightRB, HIGH);  // e
+    delay(convert(16));
+
+    digitalWrite(leftRB, HIGH);  // +
+    digitalWrite(red, HIGH);
+    delay(convert(16));
+
+    digitalWrite(red, LOW);   // a
+    delay(convert(32));
+  
+    digitalWrite(red, HIGH);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    delay(convert(32));
+
+    //____________MEASURE 4_____________
+  
+    //beat 1
+  
+    digitalWrite(yellow, HIGH);  // 1
+    digitalWrite(blue, HIGH);
+    digitalWrite(leftY, HIGH);
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+  
+    digitalWrite(yellow, LOW); // e
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    digitalWrite(leftY, LOW);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+  
+    digitalWrite(yellow, HIGH);  // +
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    digitalWrite(leftY, HIGH);
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+  
+    digitalWrite(yellow, LOW); // a
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    digitalWrite(leftY, LOW);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+  
+    //beat 2
+
+    digitalWrite(leftY, HIGH);   // 2
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+  
+    digitalWrite(leftY, LOW);  // e
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+  
+    digitalWrite(leftY, HIGH);   // +
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+  
+    digitalWrite(leftY, LOW);  // a
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+  
+    //beat 3
+
+    digitalWrite(red, HIGH);  // 3
+    digitalWrite(blue, HIGH);
+    digitalWrite(yellow, HIGH);
+    digitalWrite(leftY, HIGH);
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+  
+    digitalWrite(yellow, LOW); // e
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    digitalWrite(leftY, LOW);
+    digitalWrite(leftRB, LOW);
+    digitalWrite(rightRB, LOW);
+    digitalWrite(rightY, LOW);
+    delay(convert(16));
+  
+    digitalWrite(yellow, HIGH);  // +
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    delay(convert(16));
+  
+    digitalWrite(yellow, LOW); // a
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    digitalWrite(leftY, HIGH);
+    digitalWrite(leftRB, HIGH);
+    digitalWrite(rightRB, HIGH);
+    digitalWrite(rightY, HIGH);
+    delay(convert(16));
+  
+  //beat 4
+  
+  digitalWrite(leftY, LOW);  // 4
+  digitalWrite(leftRB, LOW);
+  digitalWrite(rightRB, LOW);
+  digitalWrite(rightY, LOW);
+  delay(convert(16)); 
+  
+  delay(convert(16));   // e
+  
+  digitalWrite(red, HIGH);  // +
+  digitalWrite(leftY, HIGH);
+  digitalWrite(leftRB, HIGH);
+  digitalWrite(rightRB, HIGH);
+  digitalWrite(rightY, HIGH);
+  delay(convert(16));
+  
+  digitalWrite(red, LOW);  // a
+  delay(convert(16));
+  
+  //__________FINISH____________
+  
+  digitalWrite(yellow, HIGH);
+  digitalWrite(red, HIGH);
+  digitalWrite(blue, HIGH);
+  delay(5000);
+  
+  digitalWrite(yellow, LOW);
+  digitalWrite(red, LOW);
+  digitalWrite(blue, LOW);
+  digitalWrite(leftY, LOW);
+  digitalWrite(leftRB, LOW);
+  digitalWrite(rightRB, LOW);
+  digitalWrite(rightY, LOW);
+}
+
+void loop() {
+}
+
